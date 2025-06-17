@@ -7,7 +7,7 @@ Using over 20 million real parking citation records issued in the City of LA, th
 ## 🔍 Why This Matters
 Los Angeles issues millions of parking tickets each year — often concentrated in specific neighborhoods, time windows, and violation types. ParkSafe LA empowers users to:
 
-    * Plan smarter parking decisions
+Plan smarter parking decisions
     * Understand risk patterns in different ZIP codes
     * Learn how time and location affect enforcement
 
