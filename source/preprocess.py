@@ -25,3 +25,6 @@ la_city_zips_clean = la_city_zips.drop(['city'], axis=1)
 la_city_zips_clean.to_csv("data/processed/la_city_zips.csv", index=False)
 
 # df_parking_citations = pd.read_csv("data/raw/Parking_Citations.csv", header=None)
+
+df_parking_citations = pd.read_csv("data/raw/Parking-Citations.csv", header=None)
+df_parking_citations.head()

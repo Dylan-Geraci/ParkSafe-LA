@@ -1,4 +1,4 @@
-data/raw/
+data/unprocessed/
 data/processed/
 models/
 *.pkl
