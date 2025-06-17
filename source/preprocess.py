@@ -2,26 +2,26 @@ import pandas as pd
 
 
 # US.txt preprocessing
-US_zip_df = pd.read_csv("datasets/US.txt", sep='\t', header=None)
+df_US_zip = pd.read_csv("data/raw/US_info.txt", sep='\t', header=None)
 
-US_zip_df.columns = [
+df_US_zip.columns = [
     'country', 'zip', 'city', 'state_name', 'state_abbr',
     'county', 'county_code', 'col_8', 'col_9',
     'latitude', 'longitude', 'col_12'
 ]
 
-ca_zips = US_zip_df[US_zip_df['state_abbr'] == 'CA']
+ca_zips = df_US_zip[df_US_zip['state_abbr'] == 'CA']
 
-la_zips = ca_zips[ca_zips['county'].str.contains(
+la_county_zips = ca_zips[ca_zips['county'].str.contains(
     'Los Angeles', case=False, na=False)]
 
-la_zip_centroids = la_zips[['zip', 'city', 'latitude', 'longitude']]
+la_zip_features = la_county_zips[['zip', 'city', 'latitude', 'longitude']]
 
-la_city_zips = la_zip_centroids[la_zip_centroids['city'] == 'Los Angeles']
+la_city_zips = la_zip_features[la_zip_features['city'] == 'Los Angeles']
 
 # zip, lat, long
 la_city_zips_clean = la_city_zips.drop(['city'], axis=1)
 
-print(la_city_zips_clean.head(5))
+la_city_zips_clean.to_csv("data/processed/la_city_zips.csv", index=False)
 
-la_city_zips_clean.to_csv("data/raw/la_zip_centroids.csv", index=False)
+# df_parking_citations = pd.read_csv("data/raw/Parking_Citations.csv", header=None)
