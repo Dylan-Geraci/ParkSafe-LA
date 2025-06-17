@@ -11,7 +11,7 @@ Los Angeles issues millions of parking tickets each year — often concentrated 
     - Understand risk patterns in different ZIP codes
     - Learn how time and location affect enforcement
 
-🗃️ Extracted Features
+## 🗃️ Extracted Features
 For this project, I extracted a focused subset of columns from the raw parking citation dataset to streamline preprocessing and modeling:
 
     issue_date – the date the citation was issued
