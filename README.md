@@ -1,126 +1,135 @@
 # 🚗 ParkSafe-LA: Parking Citation Risk Predictor
 
-ParkSafe-LA is a machine learning project that analyzes real-world parking citation data from the city of Los Angeles to predict whether a driver is likely to receive a ticket based on **ZIP code**, **hour of the day**, and **day of the week**.
-
-The model was trained on over **23 million records**, making it a robust, large-scale application of machine learning to geospatial risk prediction.
-
----
+A machine learning system that predicts parking citation risk in Los Angeles using real-world data from 23+ million citation records. The project includes both the ML model and a production-ready web application.
 
 ## 📊 Project Overview
 
-- **Goal**: Predict binary parking citation risk (`low` or `high`) by time and location
-- **Data Size**: 23M+ rows of real-world citation data
-- **Key Performance**:
-  - **Accuracy**: 67%
-  - **Macro F1-Score**: 0.66
-  - **Recall (High Risk)**: 64%
-- **Model**: Random Forest Classifier with class balancing and feature optimization
-- **Tech Stack**: Python, Pandas, NumPy, scikit-learn, Matplotlib, Google Colab, Flask
+**Objective**: Develop a binary classification model to predict parking citation risk (low/high) based on location and time factors.
 
----
+**Key Achievements**:
+- **67% accuracy** on imbalanced real-world dataset
+- **64% recall** for high-risk predictions
+- **Production deployment** via Flask web application
+- **23M+ records** processed and analyzed
 
-## 🌐 Web Application
+**Technical Stack**: Python, scikit-learn, Pandas, NumPy, Flask, HTML, Git
 
-A **Flask web application** has been created to provide an interactive interface for the ParkSafe-LA model.
+## 🏗️ Architecture & Implementation
 
-### Features
-- **User-friendly form** for inputting ZIP code, day of week, hour, and AM/PM
-- **Real-time predictions** showing "Low" or "High" parking citation risk
-- **Clean, responsive design** with modern styling
-- **Automatic feature preprocessing** (cyclical hour encoding, ZIP code one-hot encoding, day label encoding)
+### Data Pipeline
+- **Data Source**: LA City parking citations (23M+ records) + US ZIP code geolocation data
+- **Preprocessing**: Geospatial mapping using haversine BallTree, cyclical time encoding, feature engineering
+- **Feature Engineering**: 
+  - Cyclical encoding for hour (sin/cos transformation)
+  - One-hot encoding for ZIP codes (228 unique LA County ZIPs)
+  - Label encoding for day of week
+  - Risk labeling based on citation volume thresholds
 
-### How to Run the Web App
+### Machine Learning Model
+- **Algorithm**: Random Forest Classifier
+- **Hyperparameters**: n_estimators=100, max_depth=15, class_weight='balanced'
+- **Performance Metrics**:
+  - Accuracy: 67%
+  - Macro F1-Score: 0.66
+  - High-Risk Recall: 64%
+- **Model Persistence**: Saved as pickle file for production deployment
 
-1. **Install dependencies:**
-   ```bash
-   pip install flask joblib scikit-learn pandas numpy
-   ```
+### Web Application
+- **Framework**: Flask (Python)
+- **Frontend**: HTML5, CSS3, responsive design
+- **Features**:
+  - Real-time prediction interface
+  - Input validation and error handling
+  - Automatic feature preprocessing
+  - Clean, professional UI
 
-2. **Run the application:**
+## 🚀 Getting Started
+
+### Prerequisites
+```bash
+pip install flask joblib scikit-learn pandas numpy
+```
+
+### Running the Application
+1. **Start the server**:
    ```bash
    python app.py
    ```
 
-3. **Open your browser** and go to: `http://127.0.0.1:5000`
+2. **Access the web interface**:
+   ```
+   http://127.0.0.1:5000
+   ```
 
-4. **Enter your details:**
-   - ZIP Code (e.g., 90001 for downtown LA)
-   - Day of the Week (dropdown selection)
-   - Hour (1-12)
-   - AM/PM selection
+3. **Make predictions**:
+   - Enter ZIP code (e.g., 90001 for downtown LA)
+   - Select day of week
+   - Choose hour and AM/PM
+   - Get instant risk assessment
 
-5. **Get your risk prediction** instantly!
+## 📊 Data Sources
 
-### Example Usage
-- **ZIP Code**: 90001 (Downtown LA)
-- **Day**: Monday
-- **Time**: 9 AM
-- **Result**: Risk Level: High
+This project uses publicly available datasets:
 
----
+- **LA Parking Citation Records**: [Los Angeles Open Data Portal](https://data.lacity.org/Transportation/Parking-Citations/4f5p-udkv/about_data)
+  - 23+ million parking citation records from LA City
+  - Includes location coordinates, timestamps, and citation details
 
-## 🗂️ Data Sources
+- **US ZIP Code Geolocation Data**: [GeoNames](https://download.geonames.org/export/zip/)
+  - ZIP code to latitude/longitude mapping
+  - Used for geospatial analysis and LA County filtering
 
-- 📍 **U.S. ZIP Code Geolocation Data**:  
-  https://download.geonames.org/export/zip/
+## �� Project Structure
+```
+ParkSafe-LA/
+├── app.py                 # Flask web application
+├── models/
+│   └── parksafe_model_v1.pkl  # Trained ML model
+├── templates/
+│   └── index.html         # Web interface
+├── notebooks/
+│   ├── pre_processing.ipynb   # Data preprocessing pipeline
+│   └── modeling.ipynb         # Model training & evaluation
+└── README.md
+```
 
-- 🚗 **LA Parking Citation Records**:  
-  https://data.lacity.org/Transportation/Parking-Citations/4f5p-udkv/about_data
+## 🧠 Technical Skills Demonstrated
 
----
+### Machine Learning
+- **Large-scale data processing** (23M+ records)
+- **Feature engineering** for geospatial and temporal data
+- **Handling class imbalance** in real-world datasets
+- **Model evaluation** and performance optimization
+- **Production model deployment**
 
-## ⚙️ Workflow Summary
-
-### 1. Data Preprocessing
-- Cleaned over 23 million citation records and filtered to valid latitude/longitude ranges within LA
-- Used **haversine BallTree** to map citation coordinates to the nearest **Los Angeles County ZIP code**
-- Engineered time-based features (cyclical hour encoding, weekday labels)
-- One-hot encoded ZIP codes and consolidated rare ZIPs
-- Assigned a **binary risk label** based on grouped ticket volume
-
-### 2. Model Training
-- Trained a **Random Forest Classifier** (`n_estimators=100`, `max_depth=15`, `class_weight='balanced'`)
-- Evaluated using:
-  - **Accuracy**: 67%
-  - **Macro F1-score**: 0.66
-  - **High-risk recall**: 64%
-- Visualized confusion matrix and top 15 feature importances
-
-### 3. Web Application Development
-- Created Flask backend to serve the trained model
-- Built HTML/CSS frontend with form inputs and result display
-- Implemented automatic feature preprocessing to match model expectations
-- Added proper error handling and input validation
-
----
-
-## 📁 Key Files
-
-| File | Description |
-|------|-------------|
-| `pre_processing.ipynb` | Cleans, engineers, and exports the final modeling dataset |
-| `modeling.ipynb` | Trains and evaluates the binary classifier |
-| `parksafe_model_v1.pkl` | Saved trained model for reuse or deployment |
-| `app.py` | **Flask web application backend** |
-| `templates/index.html` | **Web application frontend template** |
-
----
-
-## 🧠 Skills Demonstrated
-
-- End-to-end machine learning workflow using **real-world, high-volume data**
-- Geospatial feature engineering with haversine distance
-- Handling **imbalanced classification**
-- Performance tuning for **recall-driven objectives**
-- Visualization of model decisions and feature importance
+### Software Engineering
 - **Web application development** with Flask
-- **Model deployment** and real-time prediction serving
+- **API design** and request handling
+- **Input validation** and error management
+- **Code organization** and documentation
+- **Version control** with Git
 
----
+### Data Science
+- **Geospatial analysis** and coordinate mapping
+- **Time series feature engineering**
+- **Statistical analysis** of citation patterns
+- **Data visualization** and insights communication
 
-## 🚀 Future Extensions
-- Deploy to cloud platforms (Heroku, AWS, Google Cloud)
-- Integrate interactive maps to visualize risk by ZIP and time
-- Include citation type, fine amount, or car make for deeper insights
-- Add user accounts and prediction history
-- Create mobile app version
+## 📈 Business Impact
+
+This project demonstrates the ability to:
+- **Process and analyze massive datasets** efficiently
+- **Build production-ready ML applications** from research to deployment
+- **Solve real-world problems** with practical business applications
+- **Communicate technical concepts** through user-friendly interfaces
+
+## 🔮 Future Enhancements
+
+- **Cloud deployment** (AWS, Google Cloud, Heroku)
+- **Interactive mapping** with risk visualization
+- **Mobile application** development
+- **Real-time data integration** for live predictions
+- **Advanced analytics** dashboard for city planners
+
+
+*This project showcases end-to-end machine learning development, from data preprocessing to production deployment, with a focus on real-world applicability and user experience.*
