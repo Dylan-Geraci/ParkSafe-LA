@@ -36,7 +36,6 @@ The model was trained on over **23 million records**, making it a robust, large-
 - Used **haversine BallTree** to map citation coordinates to the nearest **Los Angeles County ZIP code**
 - Engineered time-based features (cyclical hour encoding, weekday labels)
 - One-hot encoded ZIP codes and consolidated rare ZIPs
-- Grouped data by ZIP × hour × weekday to count citations
 - Assigned a **binary risk label** based on grouped ticket volume
 
 ### 2. Model Training
@@ -64,7 +63,7 @@ The model was trained on over **23 million records**, making it a robust, large-
 
 - End-to-end machine learning workflow using **real-world, high-volume data**
 - Geospatial feature engineering with haversine distance
-- Handling **imbalanced classification** using `class_weight='balanced'`
+- Handling **imbalanced classification**
 - Performance tuning for **recall-driven objectives**
 - Visualization of model decisions and feature importance
 
