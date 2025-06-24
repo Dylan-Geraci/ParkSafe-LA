@@ -15,7 +15,47 @@ The model was trained on over **23 million records**, making it a robust, large-
   - **Macro F1-Score**: 0.66
   - **Recall (High Risk)**: 64%
 - **Model**: Random Forest Classifier with class balancing and feature optimization
-- **Tech Stack**: Python, Pandas, NumPy, scikit-learn, Matplotlib, Google Colab
+- **Tech Stack**: Python, Pandas, NumPy, scikit-learn, Matplotlib, Google Colab, Flask
+
+---
+
+## 🌐 Web Application
+
+A **Flask web application** has been created to provide an interactive interface for the ParkSafe-LA model.
+
+### Features
+- **User-friendly form** for inputting ZIP code, day of week, hour, and AM/PM
+- **Real-time predictions** showing "Low" or "High" parking citation risk
+- **Clean, responsive design** with modern styling
+- **Automatic feature preprocessing** (cyclical hour encoding, ZIP code one-hot encoding, day label encoding)
+
+### How to Run the Web App
+
+1. **Install dependencies:**
+   ```bash
+   pip install flask joblib scikit-learn pandas numpy
+   ```
+
+2. **Run the application:**
+   ```bash
+   python app.py
+   ```
+
+3. **Open your browser** and go to: `http://127.0.0.1:5000`
+
+4. **Enter your details:**
+   - ZIP Code (e.g., 90001 for downtown LA)
+   - Day of the Week (dropdown selection)
+   - Hour (1-12)
+   - AM/PM selection
+
+5. **Get your risk prediction** instantly!
+
+### Example Usage
+- **ZIP Code**: 90001 (Downtown LA)
+- **Day**: Monday
+- **Time**: 9 AM
+- **Result**: Risk Level: High
 
 ---
 
@@ -46,6 +86,12 @@ The model was trained on over **23 million records**, making it a robust, large-
   - **High-risk recall**: 64%
 - Visualized confusion matrix and top 15 feature importances
 
+### 3. Web Application Development
+- Created Flask backend to serve the trained model
+- Built HTML/CSS frontend with form inputs and result display
+- Implemented automatic feature preprocessing to match model expectations
+- Added proper error handling and input validation
+
 ---
 
 ## 📁 Key Files
@@ -53,8 +99,10 @@ The model was trained on over **23 million records**, making it a robust, large-
 | File | Description |
 |------|-------------|
 | `pre_processing.ipynb` | Cleans, engineers, and exports the final modeling dataset |
-| `modeling.ipynb`         | Trains and evaluates the binary classifier |
-| `parksafe_model_v1.pkl`  | Saved trained model for reuse or deployment |
+| `modeling.ipynb` | Trains and evaluates the binary classifier |
+| `parksafe_model_v1.pkl` | Saved trained model for reuse or deployment |
+| `app.py` | **Flask web application backend** |
+| `templates/index.html` | **Web application frontend template** |
 
 ---
 
@@ -65,10 +113,14 @@ The model was trained on over **23 million records**, making it a robust, large-
 - Handling **imbalanced classification**
 - Performance tuning for **recall-driven objectives**
 - Visualization of model decisions and feature importance
+- **Web application development** with Flask
+- **Model deployment** and real-time prediction serving
 
 ---
 
 ## 🚀 Future Extensions
-- Deploy as a REST API or web app to provide live parking risk forecasts
+- Deploy to cloud platforms (Heroku, AWS, Google Cloud)
 - Integrate interactive maps to visualize risk by ZIP and time
 - Include citation type, fine amount, or car make for deeper insights
+- Add user accounts and prediction history
+- Create mobile app version
