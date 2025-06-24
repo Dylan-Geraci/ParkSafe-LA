@@ -52,10 +52,9 @@ The model was trained on over **23 million records**, making it a robust, large-
 
 | File | Description |
 |------|-------------|
-| `preprocessing.ipynb` | Cleans, engineers, and exports the final modeling dataset |
-| `model.ipynb`         | Trains and evaluates the binary classifier |
-| `parksafe_model.pkl`  | Saved trained model for reuse or deployment |
-| `Grouped_df.csv`      | Final processed dataset used in model training |
+| `pre_processing.ipynb` | Cleans, engineers, and exports the final modeling dataset |
+| `modeling.ipynb`         | Trains and evaluates the binary classifier |
+| `parksafe_model_v1.pkl`  | Saved trained model for reuse or deployment |
 
 ---
 
