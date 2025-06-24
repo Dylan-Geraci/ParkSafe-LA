@@ -78,7 +78,7 @@ This project uses publicly available datasets:
   - ZIP code to latitude/longitude mapping
   - Used for geospatial analysis and LA County filtering
 
-## �� Project Structure
+## Project Structure
 ```
 ParkSafe-LA/
 ├── app.py                 # Flask web application
