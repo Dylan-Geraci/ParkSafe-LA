@@ -75,8 +75,8 @@ This project uses publicly available datasets:
   - Includes location coordinates, timestamps, and citation details
 
 - **US ZIP Code Geolocation Data**: [GeoNames](https://download.geonames.org/export/zip/)
-  - ZIP code to latitude/longitude mapping
-  - Used for geospatial analysis and LA County filtering
+  - 'US.zip' -- used to map ZIP codes to latitude/longitude for geospatial analysis
+  
 
 ## 📁 Project Structure
 ```
