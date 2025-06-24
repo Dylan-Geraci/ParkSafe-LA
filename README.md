@@ -41,7 +41,6 @@ A machine learning system that predicts parking citation risk in Los Angeles usi
   - Real-time prediction interface
   - Input validation and error handling
   - Automatic feature preprocessing
-  - Clean, professional UI
 
 ## 🚀 Getting Started
 
