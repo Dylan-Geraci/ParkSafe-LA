@@ -36,7 +36,7 @@ A machine learning system that predicts parking citation risk in Los Angeles usi
 
 ### Web Application
 - **Framework**: Flask (Python)
-- **Frontend**: HTML5, responsive design
+- **Frontend**: HTML, CSS
 - **Features**:
   - Real-time prediction interface
   - Input validation and error handling
