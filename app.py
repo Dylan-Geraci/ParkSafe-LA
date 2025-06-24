@@ -6,19 +6,15 @@ import pandas as pd
 
 app = Flask(__name__)
 
-# Load the trained model (update path if needed)
 MODEL_PATH = os.path.join(os.path.dirname(
     __file__), 'models', 'parksafe_model_v1.pkl')
 model = joblib.load(MODEL_PATH)
 
-# List of all ZIP codes used in training (update as needed)
-# For now, we will extract from model.feature_names_in_ if available
 try:
     FEATURE_NAMES = model.feature_names_in_
 except AttributeError:
     FEATURE_NAMES = None  # fallback if not available
 
-# List of days for dropdown
 DAYS_OF_WEEK = [
     'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'
 ]
@@ -36,13 +32,11 @@ def predict():
     hour = int(request.form['hour'])
     am_pm = request.form['am_pm']
 
-    # Convert hour + AM/PM to 24-hour format
     if am_pm == 'PM' and hour != 12:
         hour += 12
     if am_pm == 'AM' and hour == 12:
         hour = 0
 
-    # Cyclical encoding for hour
     hour_sin = np.sin(2 * np.pi * hour / 24)
     hour_cos = np.cos(2 * np.pi * hour / 24)
 
@@ -64,7 +58,6 @@ def predict():
         # fallback: just zip_other
         zip_features = {f'zip_{zipcode}': True}
 
-    # Map day of week to label encoding
     day_label_map = {
         'Friday': 0,
         'Monday': 1,
@@ -76,7 +69,6 @@ def predict():
     }
     day_of_week_encoded = day_label_map[day_of_week]
 
-    # Build input DataFrame
     input_dict = {
         'day_of_week': day_of_week_encoded,
         'hour_sin': hour_sin,
@@ -89,7 +81,6 @@ def predict():
     if FEATURE_NAMES is not None:
         X = X.reindex(columns=FEATURE_NAMES, fill_value=False)
 
-    # Predict
     print(X)
     pred = model.predict(X)[0]
     proba = model.predict_proba(X)[0]
