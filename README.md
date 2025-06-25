@@ -36,12 +36,11 @@ A machine learning system that predicts parking citation risk in Los Angeles usi
 
 ### Web Application
 - **Framework**: Flask (Python)
-- **Frontend**: HTML5, CSS3, responsive design
+- **Frontend**: HTML, CSS
 - **Features**:
   - Real-time prediction interface
   - Input validation and error handling
   - Automatic feature preprocessing
-  - Clean, professional UI
 
 ## 🚀 Getting Started
 
@@ -76,20 +75,20 @@ This project uses publicly available datasets:
   - Includes location coordinates, timestamps, and citation details
 
 - **US ZIP Code Geolocation Data**: [GeoNames](https://download.geonames.org/export/zip/)
-  - ZIP code to latitude/longitude mapping
-  - Used for geospatial analysis and LA County filtering
+  - `US.zip` - used to map ZIP codes to latitude/longitude for geospatial analysis
+  
 
-## �� Project Structure
+## 📁 Project Structure
 ```
 ParkSafe-LA/
-├── app.py                 # Flask web application
+├── app.py 
 ├── models/
-│   └── parksafe_model_v1.pkl  # Trained ML model
+│   └── parksafe_model_v1.pkl 
 ├── templates/
-│   └── index.html         # Web interface
+│   └── index.html
 ├── notebooks/
-│   ├── pre_processing.ipynb   # Data preprocessing pipeline
-│   └── modeling.ipynb         # Model training & evaluation
+│   ├── pre_processing.ipynb
+│   └── modeling.ipynb        
 └── README.md
 ```
 
@@ -118,18 +117,12 @@ ParkSafe-LA/
 ## 📈 Business Impact
 
 This project demonstrates the ability to:
-- **Process and analyze massive datasets** efficiently
-- **Build production-ready ML applications** from research to deployment
-- **Solve real-world problems** with practical business applications
-- **Communicate technical concepts** through user-friendly interfaces
+- Efficient processing and analysis of large-scale datasets
+- **End-to-end development** of production-ready machine learning models
+- **Real-world problem-solving** through data-driven insights
 
 ## 🔮 Future Enhancements
 
-- **Cloud deployment** (AWS, Google Cloud, Heroku)
+- **Cloud deployment** (AWS or Azure)
 - **Interactive mapping** with risk visualization
-- **Mobile application** development
 - **Real-time data integration** for live predictions
-- **Advanced analytics** dashboard for city planners
-
-
-*This project showcases end-to-end machine learning development, from data preprocessing to production deployment, with a focus on real-world applicability and user experience.*
