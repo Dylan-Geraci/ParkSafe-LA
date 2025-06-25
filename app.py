@@ -96,7 +96,7 @@ def predict():
     print("Prediction probabilities:", proba)
     print("Prediction:", pred)
     print("Prediction type:", type(pred))
-    risk = 'High' if pred == 1 else 'Low'
+    risk = 'High' if pred == 0 else 'Low'
 
     return render_template('index.html', days=DAYS_OF_WEEK, result=f'Risk Level: {risk}')
 
