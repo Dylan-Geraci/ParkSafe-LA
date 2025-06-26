@@ -81,14 +81,14 @@ This project uses publicly available datasets:
 ## 📁 Project Structure
 ```
 ParkSafe-LA/
-├── app.py 
+├── app.py                  # Flask web server that handles user input and returns risk predictions
 ├── models/
-│   └── parksafe_model_v1.pkl 
+│   └── parksafe_model_v1.pkl  # Trained Random Forest model saved using joblib for production use 
 ├── templates/
-│   └── index.html
+│   └── index.html          # Simple HTML form for user input (ZIP code, time, day of week)
 ├── notebooks/
-│   ├── pre_processing.ipynb
-│   └── modeling.ipynb        
+│   ├── pre_processing.ipynb   # Notebook for loading, cleaning, and engineering features from citation data
+│   └── modeling.ipynb         # Notebook for training and evaluating the Random Forest classifier        
 └── README.md
 ```
 
