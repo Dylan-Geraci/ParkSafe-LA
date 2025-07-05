@@ -125,7 +125,7 @@ This project demonstrates the ability to:
 
 ParkSafe-LA is intended purely as a safety-oriented, educational tool to help users understand trends in parking citation risk based on historical data. It must not be used to circumvent parking regulations or to justify illegal parking behavior. Always follow local parking signs and ordinances.
 
-## 🔮 Future Enhancements
+## 🔮 Future Additions
 
 - **Cloud deployment** (AWS or Azure)
 - **Interactive mapping** with risk visualization
