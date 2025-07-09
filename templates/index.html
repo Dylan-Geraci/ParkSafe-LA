@@ -5,53 +5,407 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ParkSafe-LA Risk Predictor</title>
     <style>
-        body { font-family: Arial, sans-serif; background: #f7f7f7; margin: 0; padding: 0; }
-        .container { max-width: 400px; margin: 60px auto; background: #fff; padding: 30px 40px 20px 40px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-        h2 { text-align: center; margin-bottom: 24px; }
-        label { display: block; margin-top: 16px; margin-bottom: 6px; font-weight: bold; }
-        input[type="text"], select, input[type="number"] {
-            width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .row { display: flex; gap: 10px; }
-        .row > * { flex: 1; }
-        button { width: 100%; margin-top: 24px; padding: 10px; background: #1976d2; color: #fff; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; }
-        button:hover { background: #125ea8; }
-        .result { margin-top: 24px; text-align: center; font-size: 1.2em; font-weight: bold; color: #1976d2; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2c3e50;
+            font-size: 2.2em;
+            font-weight: 600;
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #34495e;
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input[type="text"], 
+        input[type="number"], 
+        select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+            color: #2c3e50;
+        }
+
+        input[type="text"]:focus, 
+        input[type="number"]:focus, 
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        input[type="text"].error {
+            border-color: #e74c3c;
+            background: #fdf2f2;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.85em;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 30px;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: 600;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .result.high-risk {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            color: #fff;
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3);
+        }
+
+        .result.low-risk {
+            background: linear-gradient(135deg, #51cf66, #40c057);
+            color: #fff;
+            box-shadow: 0 10px 25px rgba(81, 207, 102, 0.3);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .disclaimer {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            border-radius: 12px;
+            font-size: 0.85em;
+            line-height: 1.5;
+            color: #856404;
+        }
+
+        .disclaimer p {
+            margin: 0;
+        }
+
+        .disclaimer strong {
+            color: #856404;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+                margin: 10px;
+            }
+            
+            h2 {
+                font-size: 1.8em;
+            }
+            
+            .row {
+                grid-template-columns: 1fr;
+            }
+            
+            .disclaimer {
+                padding: 15px;
+                font-size: 0.8em;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>ParkSafe-LA Risk Predictor</h2>
-        <form method="POST" action="/predict">
-            <label for="zipcode">ZIP Code</label>
-            <input type="text" id="zipcode" name="zipcode" maxlength="5" required>
+        <form method="POST" action="/predict" id="predictionForm">
+            <div class="form-group">
+                <label for="zipcode">ZIP Code</label>
+                <input type="text" id="zipcode" name="zipcode" maxlength="5" required placeholder="Enter 5-digit ZIP code">
+                <div class="error-message" id="zipcode-error">Please enter a valid 5-digit ZIP code (numbers only)</div>
+            </div>
 
-            <label for="day_of_week">Day of the Week</label>
-            <select id="day_of_week" name="day_of_week" required>
-                {% for day in days %}
-                <option value="{{ day }}">{{ day }}</option>
-                {% endfor %}
-            </select>
+            <div class="form-group">
+                <label for="day_of_week">Day of the Week</label>
+                <select id="day_of_week" name="day_of_week" required>
+                    <option value="">Select a day</option>
+                    {% for day in days %}
+                    <option value="{{ day }}">{{ day }}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
             <div class="row">
-                <div>
+                <div class="form-group">
                     <label for="hour">Hour</label>
-                    <input type="number" id="hour" name="hour" min="1" max="12" required>
+                    <input type="number" id="hour" name="hour" min="1" max="12" required placeholder="1-12">
                 </div>
-                <div>
+                <div class="form-group">
                     <label for="am_pm">AM/PM</label>
                     <select id="am_pm" name="am_pm" required>
+                        <option value="">AM/PM</option>
                         <option value="AM">AM</option>
                         <option value="PM">PM</option>
                     </select>
                 </div>
             </div>
 
-            <button type="submit">Predict Risk</button>
+            <button type="submit" id="submitBtn">Predict Risk</button>
         </form>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Analyzing risk factors...</p>
+        </div>
+        
         {% if result %}
-        <div class="result">{{ result }}</div>
+        <div class="result {% if 'High' in result %}high-risk{% else %}low-risk{% endif %}">
+            {{ result }}
+        </div>
         {% endif %}
+        
+        <div class="disclaimer">
+            <p><strong>Disclaimer:</strong> This tool is for informational purposes only and should not be used to plan, encourage, or engage in any illegal activities. The risk predictions are based on historical data analysis and should not be considered as legal advice or a guarantee of safety. Always follow local laws and regulations, and use common sense when making decisions about personal safety.</p>
+        </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const zipcodeInput = document.getElementById('zipcode');
+            const zipcodeError = document.getElementById('zipcode-error');
+            const form = document.getElementById('predictionForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const loading = document.getElementById('loading');
+
+            // ZIP code validation - numbers only
+            zipcodeInput.addEventListener('input', function(e) {
+                const value = e.target.value;
+                const numericValue = value.replace(/[^0-9]/g, '');
+                
+                if (value !== numericValue) {
+                    e.target.value = numericValue;
+                }
+                
+                if (numericValue.length > 0 && numericValue.length < 5) {
+                    e.target.classList.add('error');
+                    zipcodeError.style.display = 'block';
+                } else if (numericValue.length === 5) {
+                    e.target.classList.remove('error');
+                    zipcodeError.style.display = 'none';
+                } else {
+                    e.target.classList.remove('error');
+                    zipcodeError.style.display = 'none';
+                }
+            });
+
+            // Form submission with loading state
+            form.addEventListener('submit', function(e) {
+                const zipcode = zipcodeInput.value;
+                
+                if (zipcode.length !== 5 || !/^\d{5}$/.test(zipcode)) {
+                    e.preventDefault();
+                    zipcodeInput.classList.add('error');
+                    zipcodeError.style.display = 'block';
+                    zipcodeInput.focus();
+                    return;
+                }
+                
+                // Show loading state
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Processing...';
+                loading.style.display = 'block';
+                
+                // Hide loading after a short delay (in case of errors)
+                setTimeout(() => {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Predict Risk';
+                    loading.style.display = 'none';
+                }, 5000);
+            });
+
+            // Hour validation - max 2 digits
+            const hourInput = document.getElementById('hour');
+            const amPmSelect = document.getElementById('am_pm');
+            const daySelect = document.getElementById('day_of_week');
+
+            hourInput.addEventListener('input', function(e) {
+                const value = e.target.value;
+                const numericValue = value.replace(/[^0-9]/g, '');
+                
+                // Remove non-numeric characters
+                if (value !== numericValue) {
+                    e.target.value = numericValue;
+                }
+                
+                // Limit to 2 digits maximum
+                if (numericValue.length > 2) {
+                    e.target.value = numericValue.slice(0, 2);
+                }
+                
+                // Validate hour range (1-12) and handle 0
+                const hourNum = parseInt(e.target.value);
+                if (hourNum === 0) {
+                    e.target.value = '1';
+                } else if (hourNum > 12) {
+                    e.target.value = '12';
+                }
+                
+                validateForm();
+            });
+
+            function validateForm() {
+                const isValid = zipcodeInput.value.length === 5 && 
+                              /^\d{5}$/.test(zipcodeInput.value) &&
+                              hourInput.value &&
+                              hourInput.value.length <= 2 &&
+                              parseInt(hourInput.value) >= 1 &&
+                              parseInt(hourInput.value) <= 12 &&
+                              amPmSelect.value &&
+                              daySelect.value;
+                
+                submitBtn.disabled = !isValid;
+                return isValid;
+            }
+
+            [amPmSelect, daySelect].forEach(field => {
+                field.addEventListener('change', validateForm);
+                field.addEventListener('input', validateForm);
+            });
+
+            // Initial validation
+            validateForm();
+        });
+    </script>
 </body>
 </html> 
