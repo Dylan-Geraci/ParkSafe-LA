@@ -80,13 +80,15 @@ function App() {
     setResult(null);
     
     try {
-      const response = await axios.post('/predict', formData);
+      const response = await axios.post('/predict', formData, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
       
-      // Extract the result from the response
-      // Since Flask returns HTML, we'll need to parse it or modify the backend
-      // For now, let's simulate the response
-      const riskLevel = Math.random() > 0.5 ? 'High' : 'Low';
-      setResult(`Risk Level: ${riskLevel}`);
+      // Extract the result from the JSON response
+      const { message, risk_level, probabilities } = response.data;
+      setResult(message);
     } catch (error) {
       console.error('Error making prediction:', error);
       setResult('Error: Unable to make prediction. Please try again.');
