@@ -98,27 +98,29 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen gradient-bg flex items-center justify-center p-4">
-      <div className="glass-card rounded-3xl shadow-2xl p-8 max-w-md w-full relative overflow-hidden">
-        {/* Gradient top border */}
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary-500 to-primary-700"></div>
-        
+    <div className="min-h-screen professional-bg flex items-center justify-center p-6">
+      <div className="bg-white rounded-2xl card-shadow p-8 max-w-lg w-full relative">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">
+        <div className="text-center mb-10">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
+            <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h1 className="text-3xl font-bold text-slate-800 mb-2">
             ParkSafe-LA
           </h1>
-          <h2 className="text-xl text-gray-600">
-            Risk Predictor
+          <h2 className="text-lg text-slate-600 mb-4">
+            Intelligent Parking Risk Assessment
           </h2>
-          <div className="w-16 h-1 bg-gradient-to-r from-primary-500 to-primary-700 mx-auto mt-3 rounded-full"></div>
+          <div className="section-divider"></div>
         </div>
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* ZIP Code */}
           <div>
-            <label htmlFor="zipcode" className="block text-sm font-semibold text-gray-700 uppercase tracking-wide mb-2">
+            <label htmlFor="zipcode" className="block text-sm font-medium text-slate-700 mb-2">
               ZIP Code
             </label>
             <input
@@ -138,7 +140,7 @@ function App() {
 
           {/* Day of Week */}
           <div>
-            <label htmlFor="day_of_week" className="block text-sm font-semibold text-gray-700 uppercase tracking-wide mb-2">
+            <label htmlFor="day_of_week" className="block text-sm font-medium text-slate-700 mb-2">
               Day of the Week
             </label>
             <select
@@ -154,14 +156,14 @@ function App() {
               ))}
             </select>
             {errors.day_of_week && (
-              <p className="text-red-500 text-sm mt-1 animate-slide-up">{errors.day_of_week}</p>
+              <p className="text-red-500 text-sm mt-1 animate-slide-up">{errors.zipcode}</p>
             )}
           </div>
 
           {/* Hour and AM/PM */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label htmlFor="hour" className="block text-sm font-semibold text-gray-700 uppercase tracking-wide mb-2">
+              <label htmlFor="hour" className="block text-sm font-medium text-slate-700 mb-2">
                 Hour
               </label>
               <input
@@ -179,7 +181,7 @@ function App() {
             </div>
             
             <div>
-              <label htmlFor="am_pm" className="block text-sm font-semibold text-gray-700 uppercase tracking-wide mb-2">
+              <label htmlFor="am_pm" className="block text-sm font-medium text-slate-700 mb-2">
                 AM/PM
               </label>
               <select
@@ -232,8 +234,8 @@ function App() {
         )}
 
         {/* Disclaimer */}
-        <div className="mt-8 p-4 bg-yellow-50 border border-yellow-200 rounded-xl">
-          <p className="text-sm text-yellow-800 leading-relaxed">
+        <div className="mt-8 p-4 bg-slate-50 border border-slate-200 rounded-lg">
+          <p className="text-sm text-slate-600 leading-relaxed">
             <strong>Disclaimer:</strong> This tool is for informational purposes only and should not be used to plan, encourage, or engage in any illegal activities. The risk predictions are based on historical data analysis and should not be considered as legal advice or a guarantee of safety.
           </p>
         </div>

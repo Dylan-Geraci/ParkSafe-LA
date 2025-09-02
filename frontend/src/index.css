@@ -4,38 +4,40 @@
 
 @layer base {
   body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   }
 }
 
 @layer components {
-  .gradient-bg {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  .professional-bg {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
   }
   
-  .glass-card {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+  .card-shadow {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   }
   
   .input-field {
-    @apply w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-gray-700 bg-gray-50 transition-all duration-300 focus:outline-none focus:border-primary-500 focus:bg-white focus:ring-4 focus:ring-primary-100;
+    @apply w-full px-4 py-3 border border-slate-300 rounded-lg text-slate-700 bg-white transition-all duration-200 focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 focus:shadow-sm;
   }
   
   .btn-primary {
-    @apply w-full py-4 px-6 bg-gradient-to-r from-primary-500 to-primary-700 text-white font-semibold rounded-xl transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg active:translate-y-0 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none;
+    @apply w-full py-4 px-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all duration-200 transform hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:hover:bg-blue-600;
   }
   
   .risk-card {
-    @apply mt-8 p-6 rounded-xl text-center text-xl font-semibold text-white animate-fade-in;
+    @apply mt-8 p-6 rounded-lg text-center text-xl font-semibold text-white animate-fade-in;
   }
   
   .risk-card.high {
-    @apply bg-gradient-to-r from-risk-high to-red-500 shadow-lg shadow-red-500/30;
+    @apply bg-gradient-to-r from-red-500 to-red-600 shadow-lg shadow-red-500/25;
   }
   
   .risk-card.low {
-    @apply bg-gradient-to-r from-risk-low to-green-500 shadow-lg shadow-green-500/30;
+    @apply bg-gradient-to-r from-emerald-500 to-emerald-600 shadow-lg shadow-emerald-500/25;
+  }
+  
+  .section-divider {
+    @apply w-12 h-1 bg-gradient-to-r from-blue-600 to-blue-500 mx-auto rounded-full;
   }
 }
