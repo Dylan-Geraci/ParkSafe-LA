@@ -1,10 +1,12 @@
 import os
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
+from flask_cors import CORS
 import joblib
 import numpy as np
 import pandas as pd
 
 app = Flask(__name__)
+CORS(app)
 
 MODEL_PATH = os.path.join(os.path.dirname(
     __file__), 'models', 'parksafe_model_v1.pkl')
@@ -27,10 +29,18 @@ def index():
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    zipcode = request.form['zipcode']
-    day_of_week = request.form['day_of_week']
-    hour = int(request.form['hour'])
-    am_pm = request.form['am_pm']
+    # Check if request is JSON (from React) or form data (from HTML)
+    if request.is_json:
+        data = request.get_json()
+        zipcode = data['zipcode']
+        day_of_week = data['day_of_week']
+        hour = int(data['hour'])
+        am_pm = data['am_pm']
+    else:
+        zipcode = request.form['zipcode']
+        day_of_week = request.form['day_of_week']
+        hour = int(request.form['hour'])
+        am_pm = request.form['am_pm']
 
     if am_pm == 'PM' and hour != 12:
         hour += 12
@@ -75,7 +85,7 @@ def predict():
         'hour_cos': hour_cos,
         **zip_features
     }
-    
+
     X = pd.DataFrame([input_dict])
 
     # Align columns with model
@@ -90,7 +100,16 @@ def predict():
     print("Prediction type:", type(pred))
     risk = 'High' if pred == 0 else 'Low'
 
-    return render_template('index.html', days=DAYS_OF_WEEK, result=f'Risk Level: {risk}')
+    # Return JSON for React frontend, HTML for traditional frontend
+    if request.is_json:
+        return jsonify({
+            'risk_level': risk,
+            'prediction': int(pred),
+            'probabilities': proba.tolist(),
+            'message': f'Risk Level: {risk}'
+        })
+    else:
+        return render_template('index.html', days=DAYS_OF_WEEK, result=f'Risk Level: {risk}')
 
 
 if __name__ == '__main__':
