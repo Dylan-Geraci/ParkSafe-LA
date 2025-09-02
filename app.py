@@ -75,6 +75,7 @@ def predict():
         'hour_cos': hour_cos,
         **zip_features
     }
+    
     X = pd.DataFrame([input_dict])
 
     # Align columns with model
