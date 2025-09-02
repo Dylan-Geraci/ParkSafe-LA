@@ -21,6 +21,7 @@ yarn-error.log*
 # React build
 frontend/build/
 frontend/dist/
+frontend/node_modules/
 
 # OS
 .DS_Store
