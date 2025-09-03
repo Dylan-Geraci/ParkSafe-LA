@@ -119,13 +119,11 @@ ParkSafe-LA/
 │   ├── package.json          # Node.js dependencies and scripts
 │   ├── tailwind.config.js    # Tailwind CSS configuration
 │   └── postcss.config.js     # PostCSS configuration for Tailwind
-├── templates/                 # Legacy HTML templates (optional)
-│   └── index.html            # Original HTML form interface
 ├── notebooks/                 # Jupyter notebooks for ML development
 │   ├── pre_processing.ipynb  # Data preprocessing and feature engineering
 │   └── modeling.ipynb        # Model training and evaluation
-├── requirements.txt           # Python backend dependencies
-└── README.md                 # Project documentation
+├── requirements.txt
+└── README.md            
 ```
 
 ## 🧠 Technical Skills Demonstrated
