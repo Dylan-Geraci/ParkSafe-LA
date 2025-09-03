@@ -31,33 +31,6 @@ function App() {
     setIsFormValid(isValid);
   }, [formData]);
 
-  const validateForm = () => {
-    const newErrors = {};
-    
-    // Only validate ZIP code if user has started typing
-    if (formData.zipcode && (formData.zipcode.length !== 5 || !/^\d{5}$/.test(formData.zipcode))) {
-      newErrors.zipcode = 'Please enter a valid 5-digit ZIP code';
-    }
-    
-    // Only validate other fields if user has interacted with them
-    if (formData.day_of_week === '') {
-      // Don't show error until user tries to submit
-    }
-    
-    if (formData.hour && (formData.hour < 1 || formData.hour > 12)) {
-      newErrors.hour = 'Please enter a valid hour (1-12)';
-    }
-    
-    if (formData.am_pm === '') {
-      // Don't show error until user tries to submit
-    }
-    
-    setErrors(newErrors);
-    const isValid = Object.keys(newErrors).length === 0;
-    setIsFormValid(isValid);
-    return isValid;
-  };
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     let processedValue = value;
@@ -92,17 +65,6 @@ function App() {
         // Clear error while typing
         setErrors(prev => ({ ...prev, zipcode: undefined }));
       }
-    }
-    
-    // Clear errors for other fields when they're filled
-    if (name === 'day_of_week' && value) {
-      setErrors(prev => ({ ...prev, day_of_week: undefined }));
-    }
-    if (name === 'hour' && value && value >= 1 && value <= 12) {
-      setErrors(prev => ({ ...prev, hour: undefined }));
-    }
-    if (name === 'am_pm' && value) {
-      setErrors(prev => ({ ...prev, am_pm: undefined }));
     }
   };
 

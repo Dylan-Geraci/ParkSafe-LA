@@ -12,7 +12,7 @@ A machine learning system that predicts parking citation risk in Los Angeles usi
 - **Production deployment** via Flask web application
 - **23M+ records** processed and analyzed
 
-**Technical Stack**: Python, scikit-learn, Pandas, NumPy, Flask, HTML, Git
+**Technical Stack**: Python, scikit-learn, Pandas, NumPy, Flask, React.js, Tailwind CSS, Git
 
 ## 🏗️ Architecture & Implementation
 
@@ -35,36 +35,62 @@ A machine learning system that predicts parking citation risk in Los Angeles usi
 - **Model Persistence**: Saved as pickle file for production deployment
 
 ### Web Application
-- **Framework**: Flask (Python)
-- **Frontend**: HTML, CSS
+- **Backend**: Flask (Python) with RESTful API
+- **Frontend**: React.js with Tailwind CSS
 - **Features**:
-  - Real-time prediction interface
-  - Input validation and error handling
-  - Automatic feature preprocessing
+  - Modern, responsive user interface
+  - Real-time form validation
+  - Professional design with glassmorphism effects
+  - JSON API communication
+  - Cross-platform compatibility
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 ```bash
-pip install flask joblib scikit-learn pandas numpy
+# Backend dependencies
+pip install -r requirements.txt
+
+# Frontend dependencies (Node.js required)
+cd frontend
+npm install
 ```
 
 ### Running the Application
-1. **Start the server**:
+
+#### Option 1: Full Stack (Recommended)
+1. **Start the Flask backend** (Terminal 1):
    ```bash
    python app.py
    ```
+   Backend runs on: `http://localhost:5000`
 
-2. **Access the web interface**:
+2. **Start the React frontend** (Terminal 2):
+   ```bash
+   cd frontend
+   npm start
    ```
-   http://127.0.0.1:5000
-   ```
+   Frontend runs on: `http://localhost:3000`
 
-3. **Make predictions**:
-   - Enter ZIP code (e.g., 90001 for downtown LA)
-   - Select day of week
-   - Choose hour and AM/PM
-   - Get instant risk assessment
+#### Option 2: Backend Only (Legacy HTML)
+```bash
+python app.py
+# Access at: http://localhost:5000
+```
+
+#### Option 3: Frontend Only (Development)
+```bash
+cd frontend
+npm start
+# Access at: http://localhost:3000
+# Note: API calls will fail without backend running
+```
+
+### Making Predictions
+- Enter ZIP code (e.g., 90001 for downtown LA)
+- Select day of week
+- Choose hour and AM/PM
+- Get instant risk assessment with professional UI
 
 ## 📊 Data Sources
 
@@ -81,15 +107,25 @@ This project uses publicly available datasets:
 ## 📁 Project Structure
 ```
 ParkSafe-LA/
-├── app.py                  # Flask web server that handles user input and returns risk predictions
+├── app.py                     # Flask backend API server with ML model integration
 ├── models/
-│   └── parksafe_model_v1.pkl  # Trained Random Forest model saved using joblib for production use 
-├── templates/
-│   └── index.html          # Simple HTML form for user input (ZIP code, time, day of week)
-├── notebooks/
-│   ├── pre_processing.ipynb   # Notebook for loading, cleaning, and engineering features from citation data
-│   └── modeling.ipynb         # Notebook for training and evaluating the Random Forest classifier        
-└── README.md
+│   └── parksafe_model_v1.pkl # Trained Random Forest model for production use
+├── frontend/                  # React.js frontend application
+│   ├── src/
+│   │   ├── App.js            # Main React component with form and validation
+│   │   ├── index.js          # React app entry point
+│   │   └── index.css         # Tailwind CSS styles and custom components
+│   ├── public/
+│   ├── package.json          # Node.js dependencies and scripts
+│   ├── tailwind.config.js    # Tailwind CSS configuration
+│   └── postcss.config.js     # PostCSS configuration for Tailwind
+├── templates/                 # Legacy HTML templates (optional)
+│   └── index.html            # Original HTML form interface
+├── notebooks/                 # Jupyter notebooks for ML development
+│   ├── pre_processing.ipynb  # Data preprocessing and feature engineering
+│   └── modeling.ipynb        # Model training and evaluation
+├── requirements.txt           # Python backend dependencies
+└── README.md                 # Project documentation
 ```
 
 ## 🧠 Technical Skills Demonstrated
