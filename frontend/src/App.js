@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const DAYS_OF_WEEK = [
@@ -18,7 +18,98 @@ function App() {
   const [result, setResult] = useState(null);
   const [isFormValid, setIsFormValid] = useState(false);
 
+  // Watch form data changes and update validation state
+  useEffect(() => {
+    const isValid = formData.zipcode && 
+                   formData.zipcode.length === 5 && 
+                   /^\d{5}$/.test(formData.zipcode) &&
+                   formData.day_of_week &&
+                   formData.hour &&
+                   formData.hour >= 1 &&
+                   formData.hour <= 12 &&
+                   formData.am_pm;
+    setIsFormValid(isValid);
+  }, [formData]);
+
   const validateForm = () => {
+    const newErrors = {};
+    
+    // Only validate ZIP code if user has started typing
+    if (formData.zipcode && (formData.zipcode.length !== 5 || !/^\d{5}$/.test(formData.zipcode))) {
+      newErrors.zipcode = 'Please enter a valid 5-digit ZIP code';
+    }
+    
+    // Only validate other fields if user has interacted with them
+    if (formData.day_of_week === '') {
+      // Don't show error until user tries to submit
+    }
+    
+    if (formData.hour && (formData.hour < 1 || formData.hour > 12)) {
+      newErrors.hour = 'Please enter a valid hour (1-12)';
+    }
+    
+    if (formData.am_pm === '') {
+      // Don't show error until user tries to submit
+    }
+    
+    setErrors(newErrors);
+    const isValid = Object.keys(newErrors).length === 0;
+    setIsFormValid(isValid);
+    return isValid;
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    let processedValue = value;
+    
+    // Handle ZIP code input (numbers only, max 5 digits)
+    if (name === 'zipcode') { 
+      processedValue = value.replace(/[^0-9]/g, '').slice(0, 5);
+    }
+    
+    // Handle hour input (numbers only, max 2 digits)
+    if (name === 'hour') {
+      processedValue = value.replace(/[^0-9]/g, '').slice(0, 2);
+      const hourNum = parseInt(processedValue);
+      if (hourNum > 12) processedValue = '12';
+      if (hourNum === 0) processedValue = '1';
+    }
+    
+    setFormData(prev => ({
+      ...prev,
+      [name]: processedValue
+    }));
+    
+    // Only validate ZIP code as user types (when it's complete)
+    if (name === 'zipcode') {
+      if (processedValue.length === 5) {
+        if (!/^\d{5}$/.test(processedValue)) {
+          setErrors(prev => ({ ...prev, zipcode: 'Please enter a valid 5-digit ZIP code' }));
+        } else {
+          setErrors(prev => ({ ...prev, zipcode: undefined }));
+        }
+      } else if (processedValue.length > 0) {
+        // Clear error while typing
+        setErrors(prev => ({ ...prev, zipcode: undefined }));
+      }
+    }
+    
+    // Clear errors for other fields when they're filled
+    if (name === 'day_of_week' && value) {
+      setErrors(prev => ({ ...prev, day_of_week: undefined }));
+    }
+    if (name === 'hour' && value && value >= 1 && value <= 12) {
+      setErrors(prev => ({ ...prev, hour: undefined }));
+    }
+    if (name === 'am_pm' && value) {
+      setErrors(prev => ({ ...prev, am_pm: undefined }));
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    // Validate all fields on submit
     const newErrors = {};
     
     if (!formData.zipcode || formData.zipcode.length !== 5 || !/^\d{5}$/.test(formData.zipcode)) {
@@ -37,42 +128,8 @@ function App() {
       newErrors.am_pm = 'Please select AM or PM';
     }
     
-    setErrors(newErrors);
-    const isValid = Object.keys(newErrors).length === 0;
-    setIsFormValid(isValid);
-    return isValid;
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    let processedValue = value;
-    
-    // Handle ZIP code input (numbers only, max 5 digits)
-    if (name === 'zipcode') {
-      processedValue = value.replace(/[^0-9]/g, '').slice(0, 5);
-    }
-    
-    // Handle hour input (numbers only, max 2 digits)
-    if (name === 'hour') {
-      processedValue = value.replace(/[^0-9]/g, '').slice(0, 2);
-      const hourNum = parseInt(processedValue);
-      if (hourNum > 12) processedValue = '12';
-      if (hourNum === 0) processedValue = '1';
-    }
-    
-    setFormData(prev => ({
-      ...prev,
-      [name]: processedValue
-    }));
-    
-    // Validate form after input change
-    setTimeout(validateForm, 100);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    if (!validateForm()) {
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
       return;
     }
     
