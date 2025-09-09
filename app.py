@@ -9,7 +9,8 @@ app = Flask(__name__)
 # Explicit CORS configuration to ensure Vercel frontend can call Railway backend
 CORS(
     app,
-    resources={r"/*": {"origins": "*"}},
+    resources={
+        r"/*": {"origins": ["https://www.park-safe-la.com", "https://park-safe-la.com"]}},
     methods=["GET", "POST", "OPTIONS"],
     allow_headers=["Content-Type", "Authorization"],
 )
