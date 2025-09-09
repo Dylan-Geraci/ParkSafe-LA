@@ -33,6 +33,12 @@ def index():
     return render_template('index.html', days=DAYS_OF_WEEK)
 
 
+@app.route('/predict', methods=['OPTIONS'])
+def predict_options():
+    # Respond to CORS preflight quickly
+    return ('', 204)
+
+
 @app.route('/predict', methods=['POST'])
 def predict():
     # Check if request is JSON (from React) or form data (from HTML)
@@ -125,6 +131,11 @@ def add_cors_headers(response):
     response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
     response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
     return response
+
+
+@app.route('/health', methods=['GET'])
+def health():
+    return jsonify({"status": "ok"}), 200
 
 
 if __name__ == '__main__':
