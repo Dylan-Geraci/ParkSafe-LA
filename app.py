@@ -149,14 +149,9 @@ def add_cors_headers(response):
     return response
 
 
-@app.route('/health', methods=['GET'])
+@app.get("/health")
 def health():
-    try:
-        print("Health endpoint called")
-        return jsonify({"status": "ok", "model_loaded": model is not None}), 200
-    except Exception as e:
-        print(f"Error in health endpoint: {e}")
-        return jsonify({"error": str(e)}), 500
+    return "ok", 200
 
 
 if __name__ == '__main__':
