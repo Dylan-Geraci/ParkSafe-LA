@@ -16,10 +16,16 @@ CORS(
 
 MODEL_PATH = os.path.join(os.path.dirname(
     __file__), 'models', 'parksafe_model_v1.pkl')
-model = joblib.load(MODEL_PATH)
 
 try:
-    FEATURE_NAMES = model.feature_names_in_
+    model = joblib.load(MODEL_PATH)
+    print(f"Model loaded successfully from {MODEL_PATH}")
+except Exception as e:
+    print(f"Error loading model: {e}")
+    model = None
+
+try:
+    FEATURE_NAMES = model.feature_names_in_ if model else None
 except AttributeError:
     FEATURE_NAMES = None  # fallback if not available
 
@@ -41,87 +47,96 @@ def predict_options():
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    # Check if request is JSON (from React) or form data (from HTML)
-    if request.is_json:
-        data = request.get_json()
-        zipcode = data['zipcode']
-        day_of_week = data['day_of_week']
-        hour = int(data['hour'])
-        am_pm = data['am_pm']
-    else:
-        zipcode = request.form['zipcode']
-        day_of_week = request.form['day_of_week']
-        hour = int(request.form['hour'])
-        am_pm = request.form['am_pm']
+    try:
+        # Check if model is loaded
+        if model is None:
+            return jsonify({'error': 'Model not loaded'}), 500
 
-    if am_pm == 'PM' and hour != 12:
-        hour += 12
-    if am_pm == 'AM' and hour == 12:
-        hour = 0
+        # Check if request is JSON (from React) or form data (from HTML)
+        if request.is_json:
+            data = request.get_json()
+            zipcode = data['zipcode']
+            day_of_week = data['day_of_week']
+            hour = int(data['hour'])
+            am_pm = data['am_pm']
+        else:
+            zipcode = request.form['zipcode']
+            day_of_week = request.form['day_of_week']
+            hour = int(request.form['hour'])
+            am_pm = request.form['am_pm']
 
-    hour_sin = np.sin(2 * np.pi * hour / 24)
-    hour_cos = np.cos(2 * np.pi * hour / 24)
+        if am_pm == 'PM' and hour != 12:
+            hour += 12
+        if am_pm == 'AM' and hour == 12:
+            hour = 0
 
-    # One-hot encode ZIP code
-    zip_features = {}
-    found_zip = False
-    if FEATURE_NAMES is not None:
-        for feat in FEATURE_NAMES:
-            if feat.startswith('zip_'):
-                if feat == f'zip_{zipcode}':
-                    zip_features[feat] = True
-                    found_zip = True
-                else:
-                    zip_features[feat] = False
-        # If not found, set zip_other to True if present
-        if not found_zip and 'zip_other' in zip_features:
-            zip_features['zip_other'] = True
-    else:
-        # fallback: just zip_other
-        zip_features = {f'zip_{zipcode}': True}
+        hour_sin = np.sin(2 * np.pi * hour / 24)
+        hour_cos = np.cos(2 * np.pi * hour / 24)
 
-    day_label_map = {
-        'Friday': 0,
-        'Monday': 1,
-        'Saturday': 2,
-        'Sunday': 3,
-        'Thursday': 4,
-        'Tuesday': 5,
-        'Wednesday': 6
-    }
-    day_of_week_encoded = day_label_map[day_of_week]
+        # One-hot encode ZIP code
+        zip_features = {}
+        found_zip = False
+        if FEATURE_NAMES is not None:
+            for feat in FEATURE_NAMES:
+                if feat.startswith('zip_'):
+                    if feat == f'zip_{zipcode}':
+                        zip_features[feat] = True
+                        found_zip = True
+                    else:
+                        zip_features[feat] = False
+            # If not found, set zip_other to True if present
+            if not found_zip and 'zip_other' in zip_features:
+                zip_features['zip_other'] = True
+        else:
+            # fallback: just zip_other
+            zip_features = {f'zip_{zipcode}': True}
 
-    input_dict = {
-        'day_of_week': day_of_week_encoded,
-        'hour_sin': hour_sin,
-        'hour_cos': hour_cos,
-        **zip_features
-    }
+        day_label_map = {
+            'Friday': 0,
+            'Monday': 1,
+            'Saturday': 2,
+            'Sunday': 3,
+            'Thursday': 4,
+            'Tuesday': 5,
+            'Wednesday': 6
+        }
+        day_of_week_encoded = day_label_map[day_of_week]
 
-    X = pd.DataFrame([input_dict])
+        input_dict = {
+            'day_of_week': day_of_week_encoded,
+            'hour_sin': hour_sin,
+            'hour_cos': hour_cos,
+            **zip_features
+        }
 
-    # Align columns with model
-    if FEATURE_NAMES is not None:
-        X = X.reindex(columns=FEATURE_NAMES, fill_value=False)
+        X = pd.DataFrame([input_dict])
 
-    print(X)
-    pred = model.predict(X)[0]
-    proba = model.predict_proba(X)[0]
-    print("Prediction probabilities:", proba)
-    print("Prediction:", pred)
-    print("Prediction type:", type(pred))
-    risk = 'High' if pred == 0 else 'Low'
+        # Align columns with model
+        if FEATURE_NAMES is not None:
+            X = X.reindex(columns=FEATURE_NAMES, fill_value=False)
 
-    # Return JSON for React frontend, HTML for traditional frontend
-    if request.is_json:
-        return jsonify({
-            'risk_level': risk,
-            'prediction': int(pred),
-            'probabilities': proba.tolist(),
-            'message': f'Risk Level: {risk}'
-        })
-    else:
-        return render_template('index.html', days=DAYS_OF_WEEK, result=f'Risk Level: {risk}')
+        print(X)
+        pred = model.predict(X)[0]
+        proba = model.predict_proba(X)[0]
+        print("Prediction probabilities:", proba)
+        print("Prediction:", pred)
+        print("Prediction type:", type(pred))
+        risk = 'High' if pred == 0 else 'Low'
+
+        # Return JSON for React frontend, HTML for traditional frontend
+        if request.is_json:
+            return jsonify({
+                'risk_level': risk,
+                'prediction': int(pred),
+                'probabilities': proba.tolist(),
+                'message': f'Risk Level: {risk}'
+            })
+        else:
+            return render_template('index.html', days=DAYS_OF_WEEK, result=f'Risk Level: {risk}')
+
+    except Exception as e:
+        print(f"Error in predict: {e}")
+        return jsonify({'error': str(e)}), 500
 
 
 # Ensure CORS headers are present on all responses (defensive in addition to Flask-CORS)
