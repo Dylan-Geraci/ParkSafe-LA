@@ -2,6 +2,14 @@
 
 A machine learning system that predicts parking citation risk in Los Angeles using real-world data from 23+ million citation records. The project includes both the ML model and a production-ready web application.
 
+## 🚀 Live Application
+
+**🌐 Try it now**: [https://www.park-safe-la.com](https://www.park-safe-la.com)
+
+- **Frontend**: Deployed on Vercel with automatic CI/CD
+- **Backend**: Deployed on Railway with Gunicorn WSGI server
+- **Features**: Real-time LA ZIP code validation, modern responsive UI
+
 ## 📊 Project Overview
 
 **Objective**: Develop a binary classification model to predict parking citation risk (low/high) based on location and time factors.
@@ -35,14 +43,16 @@ A machine learning system that predicts parking citation risk in Los Angeles usi
 - **Model Persistence**: Saved as pickle file for production deployment
 
 ### Web Application
-- **Backend**: Flask (Python) with RESTful API
-- **Frontend**: React.js with Tailwind CSS
+- **Backend**: Flask (Python) with RESTful API - **Deployed on Railway**
+- **Frontend**: React.js with Tailwind CSS - **Deployed on Vercel**
+- **Production URL**: [https://www.park-safe-la.com](https://www.park-safe-la.com)
 - **Features**:
   - Modern, responsive user interface
-  - Real-time form validation
+  - Real-time form validation with LA ZIP code validation
   - Professional design with glassmorphism effects
   - JSON API communication
   - Cross-platform compatibility
+  - Production deployment with automatic CI/CD
 
 ## 🚀 Getting Started
 
@@ -108,58 +118,44 @@ This project uses publicly available datasets:
 ```
 ParkSafe-LA/
 ├── app.py                     # Flask backend API server with ML model integration
+├── nixpacks.toml             # Railway deployment configuration
+├── railway.json              # Railway service configuration
+├── Procfile                  # Railway process configuration
+├── runtime.txt               # Python version specification
 ├── models/
 │   └── parksafe_model_v1.pkl # Trained Random Forest model for production use
-├── frontend/                  # React.js frontend application
+├── frontend/                  # React.js frontend application (deployed on Vercel)
 │   ├── src/
-│   │   ├── App.js            # Main React component with form and validation
+│   │   ├── App.js            # Main React component with LA ZIP validation
 │   │   ├── index.js          # React app entry point
 │   │   └── index.css         # Tailwind CSS styles and custom components
 │   ├── public/
+│   │   └── index.html        # HTML template
 │   ├── package.json          # Node.js dependencies and scripts
+│   ├── package-lock.json     # Dependency lock file
 │   ├── tailwind.config.js    # Tailwind CSS configuration
-│   └── postcss.config.js     # PostCSS configuration for Tailwind
+│   ├── postcss.config.js     # PostCSS configuration for Tailwind
+│   └── README.md             # Frontend-specific documentation
 ├── notebooks/                 # Jupyter notebooks for ML development
 │   ├── pre_processing.ipynb  # Data preprocessing and feature engineering
 │   └── modeling.ipynb        # Model training and evaluation
-├── requirements.txt
-└── README.md            
+├── requirements.txt          # Python dependencies for backend
+└── README.md                 # Project documentation
 ```
 
-## 🧠 Technical Skills Demonstrated
+## 🛠️ Technologies Used
 
-### Machine Learning
-- **Large-scale data processing** (23M+ records)
-- **Feature engineering** for geospatial and temporal data
-- **Handling class imbalance** in real-world datasets
-- **Model evaluation** and performance optimization
-- **Production model deployment**
-
-### Software Engineering
-- **Web application development** with Flask
-- **API design** and request handling
-- **Input validation** and error management
-- **Code organization** and documentation
-- **Version control** with Git
-
-### Data Science
-- **Geospatial analysis** and coordinate mapping
-- **Time series feature engineering**
-- **Statistical analysis** of citation patterns
-- **Data visualization** and insights communication
-
-## 📈 Business Impact
-
-This project demonstrates the ability to:
-- Efficient processing and analysis of large-scale datasets
-- **End-to-end development** of production-ready machine learning models
-- **Real-world problem-solving** through data-driven insights
+- **Backend**: Python, Flask, scikit-learn, Pandas, NumPy
+- **Frontend**: React.js, Tailwind CSS, Axios
+- **Deployment**: Railway (backend), Vercel (frontend)
+- **Data**: 23M+ LA parking citation records
+- **ML**: Random Forest Classifier with feature engineering
 
 ## ⚠️ Disclaimer
 ParkSafe-LA is intended purely as a safety-oriented, educational tool to help users understand trends in parking citation risk based on historical data. It must not be used to circumvent parking regulations or to justify illegal parking behavior. Always follow local parking signs and ordinances.
 
+
 ## 🔮 Future Additions
 
-- **Cloud deployment** (AWS or Azure)
 - **Interactive mapping** with risk visualization
-- **Real-time data integration** for live predictions
+- **Advanced ML models** with ensemble methods
