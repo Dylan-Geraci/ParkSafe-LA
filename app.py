@@ -1,12 +1,18 @@
 import os
 from flask import Flask, render_template, request, jsonify
-from flask_cors import CORS
 import joblib
 import numpy as np
 import pandas as pd
+from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)
+# Explicit CORS configuration to ensure Vercel frontend can call Railway backend
+CORS(
+    app,
+    resources={r"/*": {"origins": "*"}},
+    methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization"],
+)
 
 MODEL_PATH = os.path.join(os.path.dirname(
     __file__), 'models', 'parksafe_model_v1.pkl')
@@ -110,6 +116,15 @@ def predict():
         })
     else:
         return render_template('index.html', days=DAYS_OF_WEEK, result=f'Risk Level: {risk}')
+
+
+# Ensure CORS headers are present on all responses (defensive in addition to Flask-CORS)
+@app.after_request
+def add_cors_headers(response):
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+    return response
 
 
 if __name__ == '__main__':
