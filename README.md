@@ -54,7 +54,7 @@ A machine learning system that predicts parking citation risk in Los Angeles usi
   - Cross-platform compatibility
   - Production deployment with automatic CI/CD
 
-## 🚀 Getting Started
+## 🚀 Local Start
 
 ### Prerequisites
 ```bash
