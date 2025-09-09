@@ -6,13 +6,18 @@ import pandas as pd
 from flask_cors import CORS
 
 app = Flask(__name__)
-# Explicit CORS configuration to ensure Vercel frontend can call Railway backend
+
+ALLOWED_ORIGINS = [
+    "https://park-safe-la.com",
+    "https://www.park-safe-la.com",
+    "https://parksafe-la.vercel.app",  # Vercel prod/subdomain
+    "http://localhost:3000"            # optional: local dev
+]
+
 CORS(
     app,
-    resources={
-        r"/*": {"origins": ["https://www.park-safe-la.com", "https://park-safe-la.com"]}},
-    methods=["GET", "POST", "OPTIONS"],
-    allow_headers=["Content-Type", "Authorization"],
+    resources={r"/*": {"origins": ALLOWED_ORIGINS}},
+    supports_credentials=True
 )
 
 MODEL_PATH = os.path.join(os.path.dirname(
@@ -140,18 +145,9 @@ def predict():
         return jsonify({'error': str(e)}), 500
 
 
-# Ensure CORS headers are present on all responses (defensive in addition to Flask-CORS)
-@app.after_request
-def add_cors_headers(response):
-    response.headers['Access-Control-Allow-Origin'] = '*'
-    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
-    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
-    return response
-
-
 @app.get("/health")
 def health():
-    return "ok", 200
+    return jsonify(status="ok", model_loaded=bool(model)), 200
 
 
 if __name__ == '__main__':
