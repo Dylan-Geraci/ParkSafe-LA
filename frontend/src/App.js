@@ -6,6 +6,42 @@ const DAYS_OF_WEEK = [
 ];
 
 // Valid Los Angeles ZIP codes (subset of most common ones)
+// Function to generate contextual messages based on risk and time
+const getContextualMessage = (riskLevel, confidence, formData) => {
+  const hour = parseInt(formData.hour);
+  const amPm = formData.am_pm;
+  const dayOfWeek = formData.day_of_week;
+  
+  // Convert to 24-hour format for analysis
+  let hour24 = hour;
+  if (amPm === 'PM' && hour !== 12) hour24 += 12;
+  if (amPm === 'AM' && hour === 12) hour24 = 0;
+  
+  const isWeekend = dayOfWeek === 'Saturday' || dayOfWeek === 'Sunday';
+  const isRushHour = (hour24 >= 7 && hour24 <= 9) || (hour24 >= 17 && hour24 <= 19);
+  const isBusinessHours = hour24 >= 8 && hour24 <= 17;
+  
+  if (riskLevel === 'High') {
+    if (isRushHour) {
+      return "⚠️ Rush hour enforcement is typically more active. Consider alternative parking or timing.";
+    } else if (isBusinessHours) {
+      return "⚠️ Business hours often have increased parking enforcement. Double-check parking signs.";
+    } else if (isWeekend) {
+      return "⚠️ Weekend enforcement can be unpredictable. Verify parking regulations.";
+    } else {
+      return "⚠️ High risk area detected. Exercise extra caution with parking regulations.";
+    }
+  } else {
+    if (isWeekend && !isBusinessHours) {
+      return "✅ Weekend off-hours typically have relaxed enforcement. Still follow posted signs.";
+    } else if (!isBusinessHours) {
+      return "✅ Off-hours parking generally has lower enforcement activity.";
+    } else {
+      return "✅ Relatively safe parking conditions for this location and time.";
+    }
+  }
+};
+
 const LA_ZIP_CODES = new Set([
   '90001', '90002', '90003', '90004', '90005', '90006', '90007', '90008', '90009', '90010',
   '90011', '90012', '90013', '90014', '90015', '90016', '90017', '90018', '90019', '90020',
@@ -161,8 +197,21 @@ function App() {
       });
       
       // Extract the result from the JSON response
-      const { message, risk_level, probabilities } = response.data;
-      setResult(message);
+      const { message, risk_level, probabilities, prediction } = response.data;
+      
+      // Calculate confidence score (higher probability)
+      const confidence = Math.max(...probabilities) * 100;
+      const confidenceRounded = Math.round(confidence);
+      
+      // Create enhanced result with confidence and contextual message
+      const enhancedResult = {
+        riskLevel: risk_level,
+        confidence: confidenceRounded,
+        message: message,
+        contextualMessage: getContextualMessage(risk_level, confidenceRounded, formData)
+      };
+      
+      setResult(enhancedResult);
     } catch (error) {
       console.error('Error making prediction:', error);
       setResult('Error: Unable to make prediction. Please try again.');
@@ -302,8 +351,22 @@ function App() {
 
         {/* Result */}
         {result && (
-          <div className={`risk-card ${result.includes('High') ? 'high' : 'low'}`}>
-            {result}
+          <div className={`risk-card ${typeof result === 'object' ? (result.riskLevel === 'High' ? 'high' : 'low') : (result.includes('High') ? 'high' : 'low')}`}>
+            {typeof result === 'object' ? (
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xl font-bold">{result.riskLevel} Risk</h3>
+                  <div className="bg-white bg-opacity-20 px-3 py-1 rounded-full text-sm font-medium">
+                    {result.confidence}% confidence
+                  </div>
+                </div>
+                <div className="text-base leading-relaxed">
+                  {result.contextualMessage}
+                </div>
+              </div>
+            ) : (
+              result
+            )}
           </div>
         )}
 
