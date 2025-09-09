@@ -150,9 +150,16 @@ def add_cors_headers(response):
 
 @app.route('/health', methods=['GET'])
 def health():
-    return jsonify({"status": "ok"}), 200
+    try:
+        print("Health endpoint called")
+        return jsonify({"status": "ok", "model_loaded": model is not None}), 200
+    except Exception as e:
+        print(f"Error in health endpoint: {e}")
+        return jsonify({"error": str(e)}), 500
 
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
+    print(f"Starting Flask app on port {port}")
+    print(f"Model loaded: {model is not None}")
     app.run(host='0.0.0.0', port=port, debug=False)
