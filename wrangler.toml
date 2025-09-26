@@ -1,0 +1,9 @@
+name = "parksafe-la-api"
+main = "worker.js"
+compatibility_date = "2024-09-01"
+
+[env.production]
+name = "parksafe-la-api"
+
+[env.development]
+name = "parksafe-la-api-dev"
