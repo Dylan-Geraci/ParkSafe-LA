@@ -19,6 +19,7 @@ function App() {
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState(null);
+  const [enhancedResult, setEnhancedResult] = useState(null);
   const [isFormValid, setIsFormValid] = useState(false);
 
   // Watch form data changes and update validation state
@@ -100,17 +101,23 @@ function App() {
     
     setIsLoading(true);
     setResult(null);
-    
+    setEnhancedResult(null);
+
     try {
       const response = await axios.post(`${API_BASE_URL}/predict`, formData, {
         headers: {
           'Content-Type': 'application/json',
         }
       });
-      
-      // Extract the result from the JSON response
-      const { message, risk_level, probabilities } = response.data;
+
+      // Extract both basic and enhanced results
+      const { message, risk_level, probabilities, enhanced } = response.data;
       setResult(message);
+
+      // Store enhanced data if available
+      if (enhanced) {
+        setEnhancedResult(enhanced);
+      }
     } catch (error) {
       console.error('Error making prediction:', error);
       setResult('Error: Unable to make prediction. Please try again.');
@@ -248,8 +255,168 @@ function App() {
           </div>
         )}
 
-        {/* Result */}
-        {result && (
+        {/* Enhanced Result Display */}
+        {enhancedResult && (
+          <div className="mt-8 space-y-6">
+            {/* Risk Score Header */}
+            <div className={`text-center p-6 rounded-xl ${
+              enhancedResult.riskPercentage >= 70 ? 'bg-red-50 border border-red-200' :
+              enhancedResult.riskPercentage >= 40 ? 'bg-yellow-50 border border-yellow-200' :
+              'bg-green-50 border border-green-200'
+            }`}>
+              <div className="flex items-center justify-center mb-3">
+                <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
+                  enhancedResult.riskPercentage >= 70 ? 'bg-red-100' :
+                  enhancedResult.riskPercentage >= 40 ? 'bg-yellow-100' :
+                  'bg-green-100'
+                }`}>
+                  {enhancedResult.riskPercentage >= 70 ? '⚠️' :
+                   enhancedResult.riskPercentage >= 40 ? '⚡' : '✅'}
+                </div>
+              </div>
+              <h3 className={`text-2xl font-bold ${
+                enhancedResult.riskPercentage >= 70 ? 'text-red-800' :
+                enhancedResult.riskPercentage >= 40 ? 'text-yellow-800' :
+                'text-green-800'
+              }`}>
+                {enhancedResult.riskPercentage}% Risk Score
+              </h3>
+              <p className="text-gray-600 mt-1">
+                Confidence: {enhancedResult.confidence}% • {enhancedResult.location.time} on {enhancedResult.location.day}
+              </p>
+            </div>
+
+            {/* Risk Factors Breakdown */}
+            <div className="bg-white border border-gray-200 rounded-xl p-6">
+              <h4 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <svg className="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+                Risk Factor Analysis
+              </h4>
+
+              <div className="space-y-4">
+                {/* Location Factor */}
+                <div className="border-l-4 border-blue-500 pl-4">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="font-medium text-gray-700">📍 Location (ZIP {enhancedResult.location.zipcode})</span>
+                    <span className={`px-2 py-1 rounded text-sm font-medium ${
+                      enhancedResult.analysis.factors.location.percentage >= 70 ? 'bg-red-100 text-red-800' :
+                      enhancedResult.analysis.factors.location.percentage >= 40 ? 'bg-yellow-100 text-yellow-800' :
+                      'bg-green-100 text-green-800'
+                    }`}>
+                      {enhancedResult.analysis.factors.location.status}
+                    </span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-3 mb-2">
+                    <div
+                      className={`h-3 rounded-full ${
+                        enhancedResult.analysis.factors.location.percentage >= 70 ? 'bg-red-500' :
+                        enhancedResult.analysis.factors.location.percentage >= 40 ? 'bg-yellow-500' :
+                        'bg-green-500'
+                      }`}
+                      style={{ width: `${enhancedResult.analysis.factors.location.percentage}%` }}
+                    ></div>
+                  </div>
+                  <p className="text-sm text-gray-600">{enhancedResult.analysis.factors.location.description}</p>
+                </div>
+
+                {/* Timing Factor */}
+                <div className="border-l-4 border-purple-500 pl-4">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="font-medium text-gray-700">🕐 Time ({enhancedResult.location.time})</span>
+                    <span className={`px-2 py-1 rounded text-sm font-medium ${
+                      enhancedResult.analysis.factors.timing.percentage >= 70 ? 'bg-red-100 text-red-800' :
+                      enhancedResult.analysis.factors.timing.percentage >= 40 ? 'bg-yellow-100 text-yellow-800' :
+                      'bg-green-100 text-green-800'
+                    }`}>
+                      {enhancedResult.analysis.factors.timing.status}
+                    </span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-3 mb-2">
+                    <div
+                      className={`h-3 rounded-full ${
+                        enhancedResult.analysis.factors.timing.percentage >= 70 ? 'bg-red-500' :
+                        enhancedResult.analysis.factors.timing.percentage >= 40 ? 'bg-yellow-500' :
+                        'bg-green-500'
+                      }`}
+                      style={{ width: `${enhancedResult.analysis.factors.timing.percentage}%` }}
+                    ></div>
+                  </div>
+                  <p className="text-sm text-gray-600">{enhancedResult.analysis.factors.timing.description}</p>
+                </div>
+
+                {/* Day Factor */}
+                <div className="border-l-4 border-green-500 pl-4">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="font-medium text-gray-700">📅 Day ({enhancedResult.location.day})</span>
+                    <span className={`px-2 py-1 rounded text-sm font-medium ${
+                      enhancedResult.analysis.factors.dayOfWeek.percentage >= 70 ? 'bg-red-100 text-red-800' :
+                      enhancedResult.analysis.factors.dayOfWeek.percentage >= 40 ? 'bg-yellow-100 text-yellow-800' :
+                      'bg-green-100 text-green-800'
+                    }`}>
+                      {enhancedResult.analysis.factors.dayOfWeek.status}
+                    </span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-3 mb-2">
+                    <div
+                      className={`h-3 rounded-full ${
+                        enhancedResult.analysis.factors.dayOfWeek.percentage >= 70 ? 'bg-red-500' :
+                        enhancedResult.analysis.factors.dayOfWeek.percentage >= 40 ? 'bg-yellow-500' :
+                        'bg-green-500'
+                      }`}
+                      style={{ width: `${enhancedResult.analysis.factors.dayOfWeek.percentage}%` }}
+                    ></div>
+                  </div>
+                  <p className="text-sm text-gray-600">{enhancedResult.analysis.factors.dayOfWeek.description}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Insights */}
+            {enhancedResult.analysis.insights.length > 0 && (
+              <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
+                <h4 className="text-lg font-semibold text-blue-800 mb-3 flex items-center">
+                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Key Insights
+                </h4>
+                <div className="space-y-2">
+                  {enhancedResult.analysis.insights.map((insight, index) => (
+                    <div key={index} className="flex items-center text-blue-700">
+                      <span className="mr-2">•</span>
+                      <span>{insight}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Recommendations */}
+            <div className="bg-amber-50 border border-amber-200 rounded-xl p-6">
+              <h4 className="text-lg font-semibold text-amber-800 mb-3 flex items-center">
+                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707" />
+                </svg>
+                Recommendations
+              </h4>
+              <div className="grid gap-3">
+                {enhancedResult.analysis.recommendations.map((rec, index) => (
+                  <div key={index} className="flex items-start">
+                    <svg className="w-4 h-4 mr-3 mt-0.5 text-amber-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="text-amber-700 text-sm">{rec}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Basic Result (fallback) */}
+        {result && !enhancedResult && (
           <div className={`risk-card ${result.includes('High') ? 'high' : 'low'}`}>
             {result}
           </div>
