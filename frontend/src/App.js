@@ -144,7 +144,7 @@ function App() {
 
           {/* Form Card - Top Left */}
           <div className="lg:col-span-4 bg-white rounded-xl shadow-lg border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+            <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
               <svg className="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
               </svg>
@@ -260,7 +260,7 @@ function App() {
           <div className="lg:col-span-4 bg-white rounded-xl shadow-lg border border-gray-200 p-6">
             {enhancedResult ? (
               <div className="text-center">
-                <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center justify-center">
+                <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center justify-center">
                   <svg className="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                   </svg>
@@ -303,7 +303,7 @@ function App() {
 
           {/* Risk Factors Card - Top Right */}
           <div className="lg:col-span-4 bg-white rounded-xl shadow-lg border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+            <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
               <svg className="w-5 h-5 mr-2 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
               </svg>
@@ -409,7 +409,7 @@ function App() {
         {/* Recommendations Section - Bottom Row */}
         {enhancedResult && (
           <div className="mt-6 bg-white rounded-xl shadow-lg border border-gray-200 p-6">
-            <h4 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+            <h4 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
               <svg className="w-5 h-5 mr-2 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707" />
               </svg>
