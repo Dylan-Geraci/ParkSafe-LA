@@ -2,7 +2,7 @@
 
 A machine learning system that predicts parking citation risk in Los Angeles using real-world data from 23+ million citation records. The project includes both the ML model and a production-ready web application.
 
-## 📊 Project Overview
+## Project Overview
 
 **Objective**: Develop a binary classification model to predict parking citation risk (low/high) based on location and time factors.
 
@@ -14,7 +14,7 @@ A machine learning system that predicts parking citation risk in Los Angeles usi
 
 **Technical Stack**: Python, scikit-learn, Pandas, NumPy, Flask, React.js, Tailwind CSS, Git
 
-## 🏗️ Architecture & Implementation
+## Architecture & Implementation
 
 ### Data Pipeline
 - **Data Source**: LA City parking citations (23M+ records) + US ZIP code geolocation data
@@ -44,7 +44,7 @@ A machine learning system that predicts parking citation risk in Los Angeles usi
   - JSON API communication
   - Cross-platform compatibility
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 ```bash
@@ -58,10 +58,10 @@ npm install
 
 ### Running the Application
 
-#### Option 1: Full Stack (Recommended)
+#### Option 1: Full Stack (Recommended) For MacOS
 1. **Start the Flask backend** (Terminal 1):
    ```bash
-   python app.py
+   python3 app.py
    ```
    Backend runs on: `http://localhost:5000`
 
@@ -104,7 +104,7 @@ This project uses publicly available datasets:
   - `US.zip` - used to map ZIP codes to latitude/longitude for geospatial analysis
   
 
-## 📁 Project Structure
+## Project Structure
 ```
 ParkSafe-LA/
 ├── app.py                     # Flask backend API server with ML model integration
@@ -126,7 +126,7 @@ ParkSafe-LA/
 └── README.md            
 ```
 
-## 🧠 Technical Skills Demonstrated
+## Technical Skills
 
 ### Machine Learning
 - **Large-scale data processing** (23M+ records)
@@ -148,7 +148,7 @@ ParkSafe-LA/
 - **Statistical analysis** of citation patterns
 - **Data visualization** and insights communication
 
-## 📈 Business Impact
+## Business Impact
 
 This project demonstrates the ability to:
 - Efficient processing and analysis of large-scale datasets
@@ -158,7 +158,7 @@ This project demonstrates the ability to:
 ## ⚠️ Disclaimer
 ParkSafe-LA is intended purely as a safety-oriented, educational tool to help users understand trends in parking citation risk based on historical data. It must not be used to circumvent parking regulations or to justify illegal parking behavior. Always follow local parking signs and ordinances.
 
-## 🔮 Future Additions
+## Future Additions
 
 - **Cloud deployment** (AWS or Azure)
 - **Interactive mapping** with risk visualization
