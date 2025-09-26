@@ -50,7 +50,6 @@ def predict():
     hour_sin = np.sin(2 * np.pi * hour / 24)
     hour_cos = np.cos(2 * np.pi * hour / 24)
 
-    # One-hot encode ZIP code
     zip_features = {}
     found_zip = False
     if FEATURE_NAMES is not None:
