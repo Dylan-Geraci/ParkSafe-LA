@@ -5,6 +5,9 @@ const DAYS_OF_WEEK = [
   'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'
 ];
 
+// API base URL - defaults to proxy for local dev, can be overridden via environment
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || '';
+
 function App() {
   const [formData, setFormData] = useState({
     zipcode: '',
@@ -99,7 +102,7 @@ function App() {
     setResult(null);
     
     try {
-      const response = await axios.post('/predict', formData, {
+      const response = await axios.post(`${API_BASE_URL}/predict`, formData, {
         headers: {
           'Content-Type': 'application/json',
         }
