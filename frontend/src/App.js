@@ -127,290 +127,353 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen professional-bg flex items-center justify-center p-6">
-      <div className="bg-white rounded-2xl card-shadow p-8 max-w-lg w-full relative">
+    <div className="min-h-screen professional-bg p-6">
+      <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-10">
+        <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
             <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
           <h1 className="text-3xl font-bold text-slate-800 mb-2">
-            ParkSafe-LA
+            ParkSafe-LA Dashboard
           </h1>
           <h2 className="text-lg text-slate-600 mb-4">
-            Intelligent Parking Risk Assessment
+            Intelligent Parking Risk Analytics
           </h2>
-          <div className="section-divider"></div>
         </div>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* ZIP Code */}
-          <div>
-            <label htmlFor="zipcode" className="block text-sm font-medium text-slate-700 mb-2">
-              ZIP Code
-            </label>
-            <input
-              type="text"
-              id="zipcode"
-              name="zipcode"
-              value={formData.zipcode}
-              onChange={handleInputChange}
-              placeholder="Enter 5-digit ZIP code"
-              className={`input-field ${errors.zipcode ? 'border-red-500 bg-red-50' : ''}`}
-              maxLength={5}
-            />
-            {errors.zipcode && (
-              <p className="text-red-500 text-sm mt-1 animate-slide-up">{errors.zipcode}</p>
-            )}
-          </div>
+        {/* Dashboard Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-          {/* Day of Week */}
-          <div>
-            <label htmlFor="day_of_week" className="block text-sm font-medium text-slate-700 mb-2">
-              Day of the Week
-            </label>
-            <select
-              id="day_of_week"
-              name="day_of_week"
-              value={formData.day_of_week}
-              onChange={handleInputChange}
-              className={`input-field ${errors.day_of_week ? 'border-red-500 bg-red-50' : ''}`}
-            >
-              <option value="">Select a day</option>
-              {DAYS_OF_WEEK.map(day => (
-                <option key={day} value={day}>{day}</option>
-              ))}
-            </select>
-            {errors.day_of_week && (
-              <p className="text-red-500 text-sm mt-1 animate-slide-up">{errors.zipcode}</p>
-            )}
-          </div>
+          {/* Form Card - Top Left */}
+          <div className="lg:col-span-4 bg-white rounded-xl shadow-lg border border-gray-200 p-6">
+            <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+              <svg className="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              </svg>
+              Risk Assessment
+            </h3>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              {/* ZIP Code */}
+              <div>
+                <label htmlFor="zipcode" className="block text-sm font-medium text-slate-700 mb-1">
+                  ZIP Code
+                </label>
+                <input
+                  type="text"
+                  id="zipcode"
+                  name="zipcode"
+                  value={formData.zipcode}
+                  onChange={handleInputChange}
+                  placeholder="90210"
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.zipcode ? 'border-red-500 bg-red-50' : 'border-gray-300'}`}
+                  maxLength={5}
+                />
+                {errors.zipcode && (
+                  <p className="text-red-500 text-xs mt-1">{errors.zipcode}</p>
+                )}
+              </div>
 
-          {/* Hour and AM/PM */}
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label htmlFor="hour" className="block text-sm font-medium text-slate-700 mb-2">
-                Hour
-              </label>
-              <input
-                type="text"
-                id="hour"
-                name="hour"
-                value={formData.hour}
-                onChange={handleInputChange}
-                placeholder="1-12"
-                className={`input-field ${errors.hour ? 'border-red-500 bg-red-50' : ''}`}
-              />
-              {errors.hour && (
-                <p className="text-red-500 text-sm mt-1 animate-slide-up">{errors.hour}</p>
-              )}
-            </div>
-            
-            <div>
-              <label htmlFor="am_pm" className="block text-sm font-medium text-slate-700 mb-2">
-                AM/PM
-              </label>
-              <select
-                id="am_pm"
-                name="am_pm"
-                value={formData.am_pm}
-                onChange={handleInputChange}
-                className={`input-field ${errors.am_pm ? 'border-red-500 bg-red-50' : ''}`}
+              {/* Day of Week */}
+              <div>
+                <label htmlFor="day_of_week" className="block text-sm font-medium text-slate-700 mb-1">
+                  Day
+                </label>
+                <select
+                  id="day_of_week"
+                  name="day_of_week"
+                  value={formData.day_of_week}
+                  onChange={handleInputChange}
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.day_of_week ? 'border-red-500 bg-red-50' : 'border-gray-300'}`}
+                >
+                  <option value="">Select day</option>
+                  {DAYS_OF_WEEK.map(day => (
+                    <option key={day} value={day}>{day}</option>
+                  ))}
+                </select>
+                {errors.day_of_week && (
+                  <p className="text-red-500 text-xs mt-1">{errors.day_of_week}</p>
+                )}
+              </div>
+
+              {/* Hour and AM/PM */}
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label htmlFor="hour" className="block text-sm font-medium text-slate-700 mb-1">
+                    Hour
+                  </label>
+                  <input
+                    type="text"
+                    id="hour"
+                    name="hour"
+                    value={formData.hour}
+                    onChange={handleInputChange}
+                    placeholder="11"
+                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.hour ? 'border-red-500 bg-red-50' : 'border-gray-300'}`}
+                  />
+                  {errors.hour && (
+                    <p className="text-red-500 text-xs mt-1">{errors.hour}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label htmlFor="am_pm" className="block text-sm font-medium text-slate-700 mb-1">
+                    Period
+                  </label>
+                  <select
+                    id="am_pm"
+                    name="am_pm"
+                    value={formData.am_pm}
+                    onChange={handleInputChange}
+                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.am_pm ? 'border-red-500 bg-red-50' : 'border-gray-300'}`}
+                  >
+                    <option value="">AM/PM</option>
+                    <option value="AM">AM</option>
+                    <option value="PM">PM</option>
+                  </select>
+                  {errors.am_pm && (
+                    <p className="text-red-500 text-xs mt-1">{errors.am_pm}</p>
+                  )}
+                </div>
+              </div>
+
+              {/* Submit Button */}
+              <button
+                type="submit"
+                disabled={!isFormValid || isLoading}
+                className={`w-full py-3 px-4 rounded-lg font-medium transition-all duration-200 ${
+                  !isFormValid || isLoading
+                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                    : 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5'
+                }`}
               >
-                <option value="">AM/PM</option>
-                <option value="AM">AM</option>
-                <option value="PM">PM</option>
-              </select>
-              {errors.am_pm && (
-                <p className="text-red-500 text-sm mt-1 animate-slide-up">{errors.am_pm}</p>
-              )}
-            </div>
+                {isLoading ? (
+                  <div className="flex items-center justify-center space-x-2">
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    <span>Analyzing...</span>
+                  </div>
+                ) : (
+                  'Analyze Risk'
+                )}
+              </button>
+            </form>
           </div>
 
-          {/* Submit Button */}
-          <button
-            type="submit"
-            disabled={!isFormValid || isLoading}
-            className="btn-primary mt-8"
-          >
-            {isLoading ? (
-              <div className="flex items-center justify-center space-x-2">
-                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                <span>Analyzing...</span>
+          {/* Risk Score Card - Top Center */}
+          <div className="lg:col-span-4 bg-white rounded-xl shadow-lg border border-gray-200 p-6">
+            {enhancedResult ? (
+              <div className="text-center">
+                <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center justify-center">
+                  <svg className="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                  </svg>
+                  Risk Score
+                </h3>
+                <div className={`relative w-32 h-32 mx-auto mb-4 rounded-full flex items-center justify-center ${
+                  enhancedResult.riskPercentage >= 70 ? 'bg-gradient-to-br from-red-500 to-red-600' :
+                  enhancedResult.riskPercentage >= 40 ? 'bg-gradient-to-br from-yellow-500 to-orange-500' :
+                  'bg-gradient-to-br from-green-500 to-green-600'
+                }`}>
+                  <div className="text-white text-center">
+                    <div className="text-3xl font-bold">{enhancedResult.riskPercentage}%</div>
+                    <div className="text-sm opacity-90">{enhancedResult.riskLevel}</div>
+                  </div>
+                </div>
+                <p className="text-gray-600 text-sm">
+                  <span className="font-medium">Confidence:</span> {enhancedResult.confidence}%
+                </p>
+                <p className="text-gray-500 text-xs mt-1">
+                  {enhancedResult.location.time} on {enhancedResult.location.day} • ZIP {enhancedResult.location.zipcode}
+                </p>
+              </div>
+            ) : isLoading ? (
+              <div className="text-center py-8">
+                <div className="w-12 h-12 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mx-auto mb-4"></div>
+                <p className="text-gray-600 font-medium">Analyzing Risk...</p>
+                <p className="text-gray-500 text-sm mt-1">Processing location and timing data</p>
               </div>
             ) : (
-              'Predict Risk'
-            )}
-          </button>
-        </form>
-
-        {/* Loading State */}
-        {isLoading && (
-          <div className="mt-6 text-center">
-            <div className="w-8 h-8 border-3 border-primary-200 border-t-primary-500 rounded-full animate-spin mx-auto mb-2"></div>
-            <p className="text-gray-600">Analyzing risk factors...</p>
-          </div>
-        )}
-
-        {/* Enhanced Result Display */}
-        {enhancedResult && (
-          <div className="mt-8 space-y-6">
-            {/* Risk Score Header */}
-            <div className={`text-center p-6 rounded-xl ${
-              enhancedResult.riskPercentage >= 70 ? 'bg-red-50 border border-red-200' :
-              enhancedResult.riskPercentage >= 40 ? 'bg-yellow-50 border border-yellow-200' :
-              'bg-green-50 border border-green-200'
-            }`}>
-              <div className="flex items-center justify-center mb-3">
-                <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
-                  enhancedResult.riskPercentage >= 70 ? 'bg-red-100' :
-                  enhancedResult.riskPercentage >= 40 ? 'bg-yellow-100' :
-                  'bg-green-100'
-                }`}>
-                  {enhancedResult.riskPercentage >= 70 ? '⚠️' :
-                   enhancedResult.riskPercentage >= 40 ? '⚡' : '✅'}
-                </div>
-              </div>
-              <h3 className={`text-2xl font-bold ${
-                enhancedResult.riskPercentage >= 70 ? 'text-red-800' :
-                enhancedResult.riskPercentage >= 40 ? 'text-yellow-800' :
-                'text-green-800'
-              }`}>
-                {enhancedResult.riskPercentage}% Risk Score
-              </h3>
-              <p className="text-gray-600 mt-1">
-                Confidence: {enhancedResult.confidence}% • {enhancedResult.location.time} on {enhancedResult.location.day}
-              </p>
-            </div>
-
-            {/* Risk Factors Breakdown */}
-            <div className="bg-white border border-gray-200 rounded-xl p-6">
-              <h4 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-                <svg className="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                </svg>
-                Risk Factor Analysis
-              </h4>
-
-              <div className="space-y-4">
-                {/* Location Factor */}
-                <div className="border-l-4 border-blue-500 pl-4">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="font-medium text-gray-700">📍 Location (ZIP {enhancedResult.location.zipcode})</span>
-                    <span className={`px-2 py-1 rounded text-sm font-medium ${
-                      enhancedResult.analysis.factors.location.percentage >= 70 ? 'bg-red-100 text-red-800' :
-                      enhancedResult.analysis.factors.location.percentage >= 40 ? 'bg-yellow-100 text-yellow-800' :
-                      'bg-green-100 text-green-800'
-                    }`}>
-                      {enhancedResult.analysis.factors.location.status}
-                    </span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-3 mb-2">
-                    <div
-                      className={`h-3 rounded-full ${
-                        enhancedResult.analysis.factors.location.percentage >= 70 ? 'bg-red-500' :
-                        enhancedResult.analysis.factors.location.percentage >= 40 ? 'bg-yellow-500' :
-                        'bg-green-500'
-                      }`}
-                      style={{ width: `${enhancedResult.analysis.factors.location.percentage}%` }}
-                    ></div>
-                  </div>
-                  <p className="text-sm text-gray-600">{enhancedResult.analysis.factors.location.description}</p>
-                </div>
-
-                {/* Timing Factor */}
-                <div className="border-l-4 border-purple-500 pl-4">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="font-medium text-gray-700">🕐 Time ({enhancedResult.location.time})</span>
-                    <span className={`px-2 py-1 rounded text-sm font-medium ${
-                      enhancedResult.analysis.factors.timing.percentage >= 70 ? 'bg-red-100 text-red-800' :
-                      enhancedResult.analysis.factors.timing.percentage >= 40 ? 'bg-yellow-100 text-yellow-800' :
-                      'bg-green-100 text-green-800'
-                    }`}>
-                      {enhancedResult.analysis.factors.timing.status}
-                    </span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-3 mb-2">
-                    <div
-                      className={`h-3 rounded-full ${
-                        enhancedResult.analysis.factors.timing.percentage >= 70 ? 'bg-red-500' :
-                        enhancedResult.analysis.factors.timing.percentage >= 40 ? 'bg-yellow-500' :
-                        'bg-green-500'
-                      }`}
-                      style={{ width: `${enhancedResult.analysis.factors.timing.percentage}%` }}
-                    ></div>
-                  </div>
-                  <p className="text-sm text-gray-600">{enhancedResult.analysis.factors.timing.description}</p>
-                </div>
-
-                {/* Day Factor */}
-                <div className="border-l-4 border-green-500 pl-4">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="font-medium text-gray-700">📅 Day ({enhancedResult.location.day})</span>
-                    <span className={`px-2 py-1 rounded text-sm font-medium ${
-                      enhancedResult.analysis.factors.dayOfWeek.percentage >= 70 ? 'bg-red-100 text-red-800' :
-                      enhancedResult.analysis.factors.dayOfWeek.percentage >= 40 ? 'bg-yellow-100 text-yellow-800' :
-                      'bg-green-100 text-green-800'
-                    }`}>
-                      {enhancedResult.analysis.factors.dayOfWeek.status}
-                    </span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-3 mb-2">
-                    <div
-                      className={`h-3 rounded-full ${
-                        enhancedResult.analysis.factors.dayOfWeek.percentage >= 70 ? 'bg-red-500' :
-                        enhancedResult.analysis.factors.dayOfWeek.percentage >= 40 ? 'bg-yellow-500' :
-                        'bg-green-500'
-                      }`}
-                      style={{ width: `${enhancedResult.analysis.factors.dayOfWeek.percentage}%` }}
-                    ></div>
-                  </div>
-                  <p className="text-sm text-gray-600">{enhancedResult.analysis.factors.dayOfWeek.description}</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Insights */}
-            {enhancedResult.analysis.insights.length > 0 && (
-              <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
-                <h4 className="text-lg font-semibold text-blue-800 mb-3 flex items-center">
-                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <div className="text-center py-8">
+                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                   </svg>
-                  Key Insights
-                </h4>
-                <div className="space-y-2">
-                  {enhancedResult.analysis.insights.map((insight, index) => (
-                    <div key={index} className="flex items-center text-blue-700">
-                      <span className="mr-2">•</span>
-                      <span>{insight}</span>
-                    </div>
-                  ))}
                 </div>
+                <p className="text-gray-500">Fill out the form to see your risk analysis</p>
               </div>
             )}
+          </div>
 
-            {/* Recommendations */}
-            <div className="bg-amber-50 border border-amber-200 rounded-xl p-6">
-              <h4 className="text-lg font-semibold text-amber-800 mb-3 flex items-center">
-                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707" />
-                </svg>
-                Recommendations
-              </h4>
-              <div className="grid gap-3">
-                {enhancedResult.analysis.recommendations.map((rec, index) => (
-                  <div key={index} className="flex items-start">
-                    <svg className="w-4 h-4 mr-3 mt-0.5 text-amber-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span className="text-amber-700 text-sm">{rec}</span>
+          {/* Quick Insights Card - Top Right */}
+          <div className="lg:col-span-4 bg-white rounded-xl shadow-lg border border-gray-200 p-6">
+            <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+              <svg className="w-5 h-5 mr-2 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Key Insights
+            </h3>
+            {enhancedResult && enhancedResult.analysis.insights.length > 0 ? (
+              <div className="space-y-3">
+                {enhancedResult.analysis.insights.map((insight, index) => (
+                  <div key={index} className="flex items-start space-x-3 p-3 bg-purple-50 rounded-lg border border-purple-200">
+                    <div className="text-purple-600 text-lg">{insight.charAt(0)}</div>
+                    <span className="text-purple-800 text-sm font-medium">{insight.slice(2)}</span>
                   </div>
                 ))}
               </div>
+            ) : enhancedResult ? (
+              <div className="text-center py-6">
+                <div className="text-green-600 text-2xl mb-2">✓</div>
+                <p className="text-gray-600 text-sm">Standard parking conditions detected</p>
+              </div>
+            ) : (
+              <div className="text-center py-6">
+                <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <svg className="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <p className="text-gray-500 text-sm">Insights will appear here after analysis</p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Factor Analysis Cards - Second Row */}
+        {enhancedResult && (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+            {/* Location Factor Card */}
+            <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
+              <h4 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                  <span className="text-blue-600 text-lg">📍</span>
+                </div>
+                Location Risk
+              </h4>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm font-medium text-gray-700">ZIP {enhancedResult.location.zipcode}</span>
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                    enhancedResult.analysis.factors.location.percentage >= 70 ? 'bg-red-100 text-red-800' :
+                    enhancedResult.analysis.factors.location.percentage >= 40 ? 'bg-yellow-100 text-yellow-800' :
+                    'bg-green-100 text-green-800'
+                  }`}>
+                    {enhancedResult.analysis.factors.location.status}
+                  </span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-4">
+                  <div
+                    className={`h-4 rounded-full transition-all duration-1000 ${
+                      enhancedResult.analysis.factors.location.percentage >= 70 ? 'bg-gradient-to-r from-red-500 to-red-600' :
+                      enhancedResult.analysis.factors.location.percentage >= 40 ? 'bg-gradient-to-r from-yellow-500 to-orange-500' :
+                      'bg-gradient-to-r from-green-500 to-green-600'
+                    }`}
+                    style={{ width: `${enhancedResult.analysis.factors.location.percentage}%` }}
+                  ></div>
+                </div>
+                <div className="text-center">
+                  <span className="text-2xl font-bold text-gray-800">{enhancedResult.analysis.factors.location.percentage}%</span>
+                </div>
+                <p className="text-sm text-gray-600">{enhancedResult.analysis.factors.location.description}</p>
+              </div>
+            </div>
+
+            {/* Timing Factor Card */}
+            <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
+              <h4 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mr-3">
+                  <span className="text-purple-600 text-lg">🕐</span>
+                </div>
+                Time Risk
+              </h4>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm font-medium text-gray-700">{enhancedResult.location.time}</span>
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                    enhancedResult.analysis.factors.timing.percentage >= 70 ? 'bg-red-100 text-red-800' :
+                    enhancedResult.analysis.factors.timing.percentage >= 40 ? 'bg-yellow-100 text-yellow-800' :
+                    'bg-green-100 text-green-800'
+                  }`}>
+                    {enhancedResult.analysis.factors.timing.status}
+                  </span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-4">
+                  <div
+                    className={`h-4 rounded-full transition-all duration-1000 ${
+                      enhancedResult.analysis.factors.timing.percentage >= 70 ? 'bg-gradient-to-r from-red-500 to-red-600' :
+                      enhancedResult.analysis.factors.timing.percentage >= 40 ? 'bg-gradient-to-r from-yellow-500 to-orange-500' :
+                      'bg-gradient-to-r from-green-500 to-green-600'
+                    }`}
+                    style={{ width: `${enhancedResult.analysis.factors.timing.percentage}%` }}
+                  ></div>
+                </div>
+                <div className="text-center">
+                  <span className="text-2xl font-bold text-gray-800">{enhancedResult.analysis.factors.timing.percentage}%</span>
+                </div>
+                <p className="text-sm text-gray-600">{enhancedResult.analysis.factors.timing.description}</p>
+              </div>
+            </div>
+
+            {/* Day Factor Card */}
+            <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
+              <h4 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                  <span className="text-green-600 text-lg">📅</span>
+                </div>
+                Day Risk
+              </h4>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm font-medium text-gray-700">{enhancedResult.location.day}</span>
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                    enhancedResult.analysis.factors.dayOfWeek.percentage >= 70 ? 'bg-red-100 text-red-800' :
+                    enhancedResult.analysis.factors.dayOfWeek.percentage >= 40 ? 'bg-yellow-100 text-yellow-800' :
+                    'bg-green-100 text-green-800'
+                  }`}>
+                    {enhancedResult.analysis.factors.dayOfWeek.status}
+                  </span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-4">
+                  <div
+                    className={`h-4 rounded-full transition-all duration-1000 ${
+                      enhancedResult.analysis.factors.dayOfWeek.percentage >= 70 ? 'bg-gradient-to-r from-red-500 to-red-600' :
+                      enhancedResult.analysis.factors.dayOfWeek.percentage >= 40 ? 'bg-gradient-to-r from-yellow-500 to-orange-500' :
+                      'bg-gradient-to-r from-green-500 to-green-600'
+                    }`}
+                    style={{ width: `${enhancedResult.analysis.factors.dayOfWeek.percentage}%` }}
+                  ></div>
+                </div>
+                <div className="text-center">
+                  <span className="text-2xl font-bold text-gray-800">{enhancedResult.analysis.factors.dayOfWeek.percentage}%</span>
+                </div>
+                <p className="text-sm text-gray-600">{enhancedResult.analysis.factors.dayOfWeek.description}</p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Recommendations Section - Bottom Row */}
+        {enhancedResult && (
+          <div className="mt-6 bg-white rounded-xl shadow-lg border border-gray-200 p-6">
+            <h4 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+              <svg className="w-5 h-5 mr-2 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707" />
+              </svg>
+              Smart Recommendations
+            </h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {enhancedResult.analysis.recommendations.map((rec, index) => (
+                <div key={index} className="flex items-start space-x-3 p-4 bg-amber-50 rounded-lg border border-amber-200 hover:bg-amber-100 transition-colors duration-200">
+                  <div className="w-6 h-6 bg-amber-200 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <svg className="w-3 h-3 text-amber-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <span className="text-amber-800 text-sm font-medium">{rec}</span>
+                </div>
+              ))}
             </div>
           </div>
         )}
