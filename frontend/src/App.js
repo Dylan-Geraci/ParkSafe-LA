@@ -111,7 +111,7 @@ function App() {
       });
 
       // Extract both basic and enhanced results
-      const { message, risk_level, probabilities, enhanced } = response.data;
+      const { message, enhanced } = response.data;
       setResult(message);
 
       // Store enhanced data if available
@@ -140,7 +140,7 @@ function App() {
             ParkSafe-LA Dashboard
           </h1>
           <h2 className="text-lg text-slate-600 mb-4">
-            Intelligent Parking Risk Analytics
+            Parking Risk Analytics for LA County
           </h2>
         </div>
 
@@ -306,153 +306,110 @@ function App() {
             )}
           </div>
 
-          {/* Quick Insights Card - Top Right */}
+          {/* Risk Factors Card - Top Right */}
           <div className="lg:col-span-4 bg-white rounded-xl shadow-lg border border-gray-200 p-6">
             <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-              <svg className="w-5 h-5 mr-2 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <svg className="w-5 h-5 mr-2 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
               </svg>
-              Key Insights
+              Risk Factors
             </h3>
-            {enhancedResult && enhancedResult.analysis.insights.length > 0 ? (
-              <div className="space-y-3">
-                {enhancedResult.analysis.insights.map((insight, index) => (
-                  <div key={index} className="flex items-start space-x-3 p-3 bg-purple-50 rounded-lg border border-purple-200">
-                    <div className="text-purple-600 text-lg">{insight.charAt(0)}</div>
-                    <span className="text-purple-800 text-sm font-medium">{insight.slice(2)}</span>
+            {enhancedResult ? (
+              <div className="space-y-4">
+                {/* Location Factor */}
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium text-gray-700 flex items-center">
+                      <span className="text-blue-600 mr-2">📍</span>
+                      Location (ZIP {enhancedResult.location.zipcode})
+                    </span>
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                      enhancedResult.analysis.factors.location.percentage >= 70 ? 'bg-red-100 text-red-800' :
+                      enhancedResult.analysis.factors.location.percentage >= 40 ? 'bg-yellow-100 text-yellow-800' :
+                      'bg-green-100 text-green-800'
+                    }`}>
+                      {enhancedResult.analysis.factors.location.percentage}%
+                    </span>
                   </div>
-                ))}
-              </div>
-            ) : enhancedResult ? (
-              <div className="text-center py-6">
-                <div className="text-green-600 text-2xl mb-2">✓</div>
-                <p className="text-gray-600 text-sm">Standard parking conditions detected</p>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      className={`h-2 rounded-full transition-all duration-1000 ${
+                        enhancedResult.analysis.factors.location.percentage >= 70 ? 'bg-gradient-to-r from-red-500 to-red-600' :
+                        enhancedResult.analysis.factors.location.percentage >= 40 ? 'bg-gradient-to-r from-yellow-500 to-orange-500' :
+                        'bg-gradient-to-r from-green-500 to-green-600'
+                      }`}
+                      style={{ width: `${enhancedResult.analysis.factors.location.percentage}%` }}
+                    ></div>
+                  </div>
+                </div>
+
+                {/* Time Factor */}
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium text-gray-700 flex items-center">
+                      <span className="text-purple-600 mr-2">🕐</span>
+                      Time ({enhancedResult.location.time})
+                    </span>
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                      enhancedResult.analysis.factors.timing.percentage >= 70 ? 'bg-red-100 text-red-800' :
+                      enhancedResult.analysis.factors.timing.percentage >= 40 ? 'bg-yellow-100 text-yellow-800' :
+                      'bg-green-100 text-green-800'
+                    }`}>
+                      {enhancedResult.analysis.factors.timing.percentage}%
+                    </span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      className={`h-2 rounded-full transition-all duration-1000 ${
+                        enhancedResult.analysis.factors.timing.percentage >= 70 ? 'bg-gradient-to-r from-red-500 to-red-600' :
+                        enhancedResult.analysis.factors.timing.percentage >= 40 ? 'bg-gradient-to-r from-yellow-500 to-orange-500' :
+                        'bg-gradient-to-r from-green-500 to-green-600'
+                      }`}
+                      style={{ width: `${enhancedResult.analysis.factors.timing.percentage}%` }}
+                    ></div>
+                  </div>
+                </div>
+
+                {/* Day Factor */}
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium text-gray-700 flex items-center">
+                      <span className="text-green-600 mr-2">📅</span>
+                      Day ({enhancedResult.location.day})
+                    </span>
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                      enhancedResult.analysis.factors.dayOfWeek.percentage >= 70 ? 'bg-red-100 text-red-800' :
+                      enhancedResult.analysis.factors.dayOfWeek.percentage >= 40 ? 'bg-yellow-100 text-yellow-800' :
+                      'bg-green-100 text-green-800'
+                    }`}>
+                      {enhancedResult.analysis.factors.dayOfWeek.percentage}%
+                    </span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      className={`h-2 rounded-full transition-all duration-1000 ${
+                        enhancedResult.analysis.factors.dayOfWeek.percentage >= 70 ? 'bg-gradient-to-r from-red-500 to-red-600' :
+                        enhancedResult.analysis.factors.dayOfWeek.percentage >= 40 ? 'bg-gradient-to-r from-yellow-500 to-orange-500' :
+                        'bg-gradient-to-r from-green-500 to-green-600'
+                      }`}
+                      style={{ width: `${enhancedResult.analysis.factors.dayOfWeek.percentage}%` }}
+                    ></div>
+                  </div>
+                </div>
               </div>
             ) : (
               <div className="text-center py-6">
-                <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <svg className="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <svg className="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                   </svg>
                 </div>
-                <p className="text-gray-500 text-sm">Insights will appear here after analysis</p>
+                <p className="text-gray-500 text-sm">Risk breakdown will appear here after analysis</p>
               </div>
             )}
           </div>
         </div>
 
-        {/* Factor Analysis Cards - Second Row */}
-        {enhancedResult && (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
-            {/* Location Factor Card */}
-            <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
-              <h4 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-                <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
-                  <span className="text-blue-600 text-lg">📍</span>
-                </div>
-                Location Risk
-              </h4>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium text-gray-700">ZIP {enhancedResult.location.zipcode}</span>
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    enhancedResult.analysis.factors.location.percentage >= 70 ? 'bg-red-100 text-red-800' :
-                    enhancedResult.analysis.factors.location.percentage >= 40 ? 'bg-yellow-100 text-yellow-800' :
-                    'bg-green-100 text-green-800'
-                  }`}>
-                    {enhancedResult.analysis.factors.location.status}
-                  </span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-4">
-                  <div
-                    className={`h-4 rounded-full transition-all duration-1000 ${
-                      enhancedResult.analysis.factors.location.percentage >= 70 ? 'bg-gradient-to-r from-red-500 to-red-600' :
-                      enhancedResult.analysis.factors.location.percentage >= 40 ? 'bg-gradient-to-r from-yellow-500 to-orange-500' :
-                      'bg-gradient-to-r from-green-500 to-green-600'
-                    }`}
-                    style={{ width: `${enhancedResult.analysis.factors.location.percentage}%` }}
-                  ></div>
-                </div>
-                <div className="text-center">
-                  <span className="text-2xl font-bold text-gray-800">{enhancedResult.analysis.factors.location.percentage}%</span>
-                </div>
-                <p className="text-sm text-gray-600">{enhancedResult.analysis.factors.location.description}</p>
-              </div>
-            </div>
-
-            {/* Timing Factor Card */}
-            <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
-              <h4 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-                <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mr-3">
-                  <span className="text-purple-600 text-lg">🕐</span>
-                </div>
-                Time Risk
-              </h4>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium text-gray-700">{enhancedResult.location.time}</span>
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    enhancedResult.analysis.factors.timing.percentage >= 70 ? 'bg-red-100 text-red-800' :
-                    enhancedResult.analysis.factors.timing.percentage >= 40 ? 'bg-yellow-100 text-yellow-800' :
-                    'bg-green-100 text-green-800'
-                  }`}>
-                    {enhancedResult.analysis.factors.timing.status}
-                  </span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-4">
-                  <div
-                    className={`h-4 rounded-full transition-all duration-1000 ${
-                      enhancedResult.analysis.factors.timing.percentage >= 70 ? 'bg-gradient-to-r from-red-500 to-red-600' :
-                      enhancedResult.analysis.factors.timing.percentage >= 40 ? 'bg-gradient-to-r from-yellow-500 to-orange-500' :
-                      'bg-gradient-to-r from-green-500 to-green-600'
-                    }`}
-                    style={{ width: `${enhancedResult.analysis.factors.timing.percentage}%` }}
-                  ></div>
-                </div>
-                <div className="text-center">
-                  <span className="text-2xl font-bold text-gray-800">{enhancedResult.analysis.factors.timing.percentage}%</span>
-                </div>
-                <p className="text-sm text-gray-600">{enhancedResult.analysis.factors.timing.description}</p>
-              </div>
-            </div>
-
-            {/* Day Factor Card */}
-            <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
-              <h4 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-                <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
-                  <span className="text-green-600 text-lg">📅</span>
-                </div>
-                Day Risk
-              </h4>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium text-gray-700">{enhancedResult.location.day}</span>
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    enhancedResult.analysis.factors.dayOfWeek.percentage >= 70 ? 'bg-red-100 text-red-800' :
-                    enhancedResult.analysis.factors.dayOfWeek.percentage >= 40 ? 'bg-yellow-100 text-yellow-800' :
-                    'bg-green-100 text-green-800'
-                  }`}>
-                    {enhancedResult.analysis.factors.dayOfWeek.status}
-                  </span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-4">
-                  <div
-                    className={`h-4 rounded-full transition-all duration-1000 ${
-                      enhancedResult.analysis.factors.dayOfWeek.percentage >= 70 ? 'bg-gradient-to-r from-red-500 to-red-600' :
-                      enhancedResult.analysis.factors.dayOfWeek.percentage >= 40 ? 'bg-gradient-to-r from-yellow-500 to-orange-500' :
-                      'bg-gradient-to-r from-green-500 to-green-600'
-                    }`}
-                    style={{ width: `${enhancedResult.analysis.factors.dayOfWeek.percentage}%` }}
-                  ></div>
-                </div>
-                <div className="text-center">
-                  <span className="text-2xl font-bold text-gray-800">{enhancedResult.analysis.factors.dayOfWeek.percentage}%</span>
-                </div>
-                <p className="text-sm text-gray-600">{enhancedResult.analysis.factors.dayOfWeek.description}</p>
-              </div>
-            </div>
-          </div>
-        )}
 
         {/* Recommendations Section - Bottom Row */}
         {enhancedResult && (
@@ -461,7 +418,7 @@ function App() {
               <svg className="w-5 h-5 mr-2 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707" />
               </svg>
-              Smart Recommendations
+              Recommendations
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {enhancedResult.analysis.recommendations.map((rec, index) => (
