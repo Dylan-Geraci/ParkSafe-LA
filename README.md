@@ -14,6 +14,10 @@ A machine learning system that predicts parking citation risk in Los Angeles usi
 
 **Technical Stack**: Python, scikit-learn, Pandas, NumPy, Flask, React.js, Tailwind CSS, Git
 
+## Deployment Setup
+- **Frontend**: Deployed on Vercel (React.js)
+- **Backend**: Cloudflare Workers (migrated from Railway)
+
 ## Architecture & Implementation
 
 ### Data Pipeline
@@ -56,9 +60,9 @@ cd frontend
 npm install
 ```
 
-### Running the Application
+### Running the Application Locally
 
-#### Option 1: Full Stack (Recommended) For MacOS
+#### Full Stack For MacOS
 1. **Start the Flask backend** (Terminal 1):
    ```bash
    python3 app.py
@@ -71,20 +75,6 @@ npm install
    npm start
    ```
    Frontend runs on: `http://localhost:3000`
-
-#### Option 2: Backend Only (Legacy HTML)
-```bash
-python app.py
-# Access at: http://localhost:5000
-```
-
-#### Option 3: Frontend Only (Development)
-```bash
-cd frontend
-npm start
-# Access at: http://localhost:3000
-# Note: API calls will fail without backend running
-```
 
 ### Making Predictions
 - Enter ZIP code (e.g., 90001 for downtown LA)
@@ -158,8 +148,8 @@ This project demonstrates the ability to:
 ## ⚠️ Disclaimer
 ParkSafe-LA is intended purely as a safety-oriented, educational tool to help users understand trends in parking citation risk based on historical data. It must not be used to circumvent parking regulations or to justify illegal parking behavior. Always follow local parking signs and ordinances.
 
+
 ## Future Additions
 
-- **Cloud deployment** (AWS or Azure)
 - **Interactive mapping** with risk visualization
 - **Real-time data integration** for live predictions
