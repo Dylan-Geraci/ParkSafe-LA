@@ -131,15 +131,10 @@ function App() {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
-            <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          </div>
           <h1 className="text-3xl font-bold text-slate-800 mb-2">
             ParkSafe-LA Dashboard
           </h1>
-          <h2 className="text-lg text-slate-600 mb-4">
+          <h2 className="text-lg text-slate-600">
             Parking Risk Analytics for LA County
           </h2>
         </div>
@@ -271,7 +266,7 @@ function App() {
                   </svg>
                   Risk Score
                 </h3>
-                <div className={`relative w-32 h-32 mx-auto mb-4 rounded-full flex items-center justify-center ${
+                <div className={`relative w-32 h-32 mx-auto mb-3 rounded-full flex items-center justify-center ${
                   enhancedResult.riskPercentage >= 70 ? 'bg-gradient-to-br from-red-500 to-red-600' :
                   enhancedResult.riskPercentage >= 40 ? 'bg-gradient-to-br from-yellow-500 to-orange-500' :
                   'bg-gradient-to-br from-green-500 to-green-600'
@@ -281,10 +276,10 @@ function App() {
                     <div className="text-sm opacity-90">{enhancedResult.riskLevel}</div>
                   </div>
                 </div>
-                <p className="text-gray-600 text-sm">
+                <p className="text-gray-600 text-sm mb-1">
                   <span className="font-medium">Confidence:</span> {enhancedResult.confidence}%
                 </p>
-                <p className="text-gray-500 text-xs mt-1">
+                <p className="text-gray-500 text-xs">
                   {enhancedResult.location.time} on {enhancedResult.location.day} • ZIP {enhancedResult.location.zipcode}
                 </p>
               </div>
