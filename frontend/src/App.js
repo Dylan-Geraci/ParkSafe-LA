@@ -266,14 +266,14 @@ function App() {
                   </svg>
                   Risk Score
                 </h3>
-                <div className={`relative w-32 h-32 mx-auto mb-3 rounded-full flex items-center justify-center ${
+                <div className={`relative w-40 h-40 mx-auto mb-4 rounded-full flex items-center justify-center ${
                   enhancedResult.riskPercentage >= 70 ? 'bg-gradient-to-br from-red-500 to-red-600' :
                   enhancedResult.riskPercentage >= 40 ? 'bg-gradient-to-br from-yellow-500 to-orange-500' :
                   'bg-gradient-to-br from-green-500 to-green-600'
                 }`}>
                   <div className="text-white text-center">
-                    <div className="text-3xl font-bold">{enhancedResult.riskPercentage}%</div>
-                    <div className="text-sm opacity-90">{enhancedResult.riskLevel}</div>
+                    <div className="text-4xl font-bold">{enhancedResult.riskPercentage}%</div>
+                    <div className="text-base opacity-90">{enhancedResult.riskLevel}</div>
                   </div>
                 </div>
                 <p className="text-gray-600 text-sm mb-1">
@@ -310,7 +310,7 @@ function App() {
               Risk Factors
             </h3>
             {enhancedResult ? (
-              <div className="space-y-4">
+              <div className="space-y-6">
                 {/* Location Factor */}
                 <div className="space-y-2">
                   <div className="flex justify-between items-center">
