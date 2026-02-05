@@ -9,35 +9,87 @@
 }
 
 @layer components {
+  /* Dark professional gradient background */
   .professional-bg {
-    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
   }
-  
+
+  /* Enhanced multi-layer shadow for glass effect cards */
   .card-shadow {
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    box-shadow:
+      0 20px 25px -5px rgba(0, 0, 0, 0.4),
+      0 10px 10px -5px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
   }
-  
+
+  /* Dark theme input with enhanced states */
   .input-field {
-    @apply w-full px-4 py-3 border border-slate-300 rounded-lg text-slate-700 bg-white transition-all duration-200 focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 focus:shadow-sm;
+    @apply w-full px-4 py-3 border border-slate-600 rounded-lg text-slate-100 bg-slate-800/50 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 focus:shadow-lg focus:shadow-blue-500/10 hover:border-slate-500;
   }
-  
+
+  .input-field.error {
+    @apply border-red-500 bg-red-900/20 focus:border-red-500 focus:ring-red-500/30;
+  }
+
+  .input-field.valid {
+    @apply border-emerald-500 bg-emerald-900/20 focus:border-emerald-500 focus:ring-emerald-500/30;
+  }
+
+  /* Enhanced primary button with glow effect */
   .btn-primary {
-    @apply w-full py-4 px-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all duration-200 transform hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:hover:bg-blue-600;
+    @apply w-full py-4 px-6 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-lg transition-all duration-200 transform hover:-translate-y-0.5 hover:shadow-glow-blue active:translate-y-0 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:hover:from-blue-600 disabled:hover:to-blue-700 disabled:shadow-none;
   }
-  
+
+  /* Dark theme risk cards with glow effects */
   .risk-card {
-    @apply mt-8 p-6 rounded-lg text-center text-xl font-semibold text-white animate-fade-in;
+    @apply mt-8 p-6 rounded-2xl text-center text-xl font-semibold text-white animate-fade-in backdrop-blur-xl;
   }
-  
+
   .risk-card.high {
-    @apply bg-gradient-to-r from-red-500 to-red-600 shadow-lg shadow-red-500/25;
+    @apply bg-gradient-to-r from-red-600 to-red-700 shadow-glow-red border border-red-500/30;
   }
-  
+
+  .risk-card.medium {
+    @apply bg-gradient-to-r from-amber-500 to-orange-600 shadow-glow-amber border border-amber-400/30;
+  }
+
   .risk-card.low {
-    @apply bg-gradient-to-r from-emerald-500 to-emerald-600 shadow-lg shadow-emerald-500/25;
+    @apply bg-gradient-to-r from-emerald-600 to-emerald-700 shadow-glow-emerald border border-emerald-500/30;
   }
-  
+
+  /* Colored accent divider */
   .section-divider {
-    @apply w-12 h-1 bg-gradient-to-r from-blue-600 to-blue-500 mx-auto rounded-full;
+    @apply w-12 h-1 bg-gradient-to-r from-blue-500 to-violet-500 mx-auto rounded-full;
+  }
+
+  /* Skeleton loading animation */
+  .skeleton-box {
+    @apply bg-slate-700/50 animate-pulse rounded-lg;
+  }
+
+  /* Glow effect utility */
+  .glow-effect {
+    @apply shadow-glow-blue animate-glow;
+  }
+
+  /* Focus ring for accessibility */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-3 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-900;
+  }
+
+  /* Glass effect card */
+  .glass-card {
+    @apply bg-slate-800/50 backdrop-blur-xl border border-slate-700/50 rounded-2xl shadow-2xl shadow-black/20;
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
