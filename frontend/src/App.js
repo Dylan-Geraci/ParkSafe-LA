@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+import { motion, useReducedMotion } from 'framer-motion';
+import { FaMapMarkerAlt, FaClock, FaCalendarDay, FaExclamationTriangle } from 'react-icons/fa';
 
 const DAYS_OF_WEEK = [
   'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'
@@ -15,17 +17,20 @@ function App() {
     hour: '',
     am_pm: ''
   });
-  
+
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [enhancedResult, setEnhancedResult] = useState(null);
   const [isFormValid, setIsFormValid] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
+  const [animateScore, setAnimateScore] = useState(0);
+  const scoreIntervalRef = useRef(null);
 
   // Watch form data changes and update validation state
   useEffect(() => {
-    const isValid = formData.zipcode && 
-                   formData.zipcode.length === 5 && 
+    const isValid = formData.zipcode &&
+                   formData.zipcode.length === 5 &&
                    /^\d{5}$/.test(formData.zipcode) &&
                    formData.day_of_week &&
                    formData.hour &&
@@ -34,6 +39,36 @@ function App() {
                    formData.am_pm;
     setIsFormValid(isValid);
   }, [formData]);
+
+  // Animate score counting when result changes
+  useEffect(() => {
+    if (enhancedResult && !shouldReduceMotion) {
+      setAnimateScore(0);
+      const targetScore = enhancedResult.riskPercentage;
+      const duration = 1500; // 1.5 seconds
+      const steps = 60;
+      const increment = targetScore / steps;
+      let currentStep = 0;
+
+      scoreIntervalRef.current = setInterval(() => {
+        currentStep++;
+        if (currentStep >= steps) {
+          setAnimateScore(targetScore);
+          clearInterval(scoreIntervalRef.current);
+        } else {
+          setAnimateScore(Math.floor(increment * currentStep));
+        }
+      }, duration / steps);
+
+      return () => {
+        if (scoreIntervalRef.current) {
+          clearInterval(scoreIntervalRef.current);
+        }
+      };
+    } else if (enhancedResult && shouldReduceMotion) {
+      setAnimateScore(enhancedResult.riskPercentage);
+    }
+  }, [enhancedResult, shouldReduceMotion]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -126,9 +161,74 @@ function App() {
     }
   };
 
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: shouldReduceMotion ? 0 : 0.1,
+        delayChildren: shouldReduceMotion ? 0 : 0.1
+      }
+    }
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20, scale: 0.95 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: shouldReduceMotion ? 0.01 : 0.4,
+        ease: [0.25, 0.46, 0.45, 0.94]
+      }
+    }
+  };
+
+  const scoreVariants = {
+    hidden: { scale: 0.5, opacity: 0 },
+    visible: {
+      scale: 1,
+      opacity: 1,
+      transition: {
+        type: shouldReduceMotion ? 'tween' : 'spring',
+        stiffness: 100,
+        damping: 15,
+        duration: shouldReduceMotion ? 0.01 : 0.6
+      }
+    }
+  };
+
+  const progressBarVariants = {
+    hidden: { width: 0 },
+    visible: (percentage) => ({
+      width: `${percentage}%`,
+      transition: {
+        duration: shouldReduceMotion ? 0.01 : 0.8,
+        ease: 'easeOut',
+        delay: shouldReduceMotion ? 0 : 0.3
+      }
+    })
+  };
+
   return (
     <div className="min-h-screen professional-bg p-4 md:p-8">
-      <div className="max-w-7xl mx-auto">
+      {/* Skip to main content link for keyboard navigation */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-blue-600 focus:text-white focus:rounded-lg focus:shadow-glow-blue"
+      >
+        Skip to main content
+      </a>
+
+      {/* Screen reader announcements */}
+      <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+        {isLoading && "Analyzing parking risk data"}
+        {enhancedResult && `Analysis complete. Risk level is ${enhancedResult.riskLevel} at ${enhancedResult.riskPercentage} percent.`}
+      </div>
+
+      <div className="max-w-7xl mx-auto" id="main-content">
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-3 bg-gradient-to-r from-blue-400 via-violet-400 to-blue-500 bg-clip-text text-transparent">
@@ -140,10 +240,19 @@ function App() {
         </div>
 
         {/* Dashboard Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8">
+        <motion.div
+          className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
 
           {/* Form Card - Top Left */}
-          <div className="lg:col-span-4 glass-card p-8 hover:shadow-glow-blue transition-all duration-300">
+          <motion.div
+            className="lg:col-span-4 glass-card p-8 hover:shadow-glow-blue transition-all duration-300"
+            variants={cardVariants}
+            whileHover={shouldReduceMotion ? {} : { y: -2, transition: { duration: 0.2 } }}
+          >
             <h3 className="text-2xl font-bold text-slate-50 mb-6 flex items-center">
               <svg className="w-6 h-6 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
@@ -156,26 +265,59 @@ function App() {
                 <label htmlFor="zipcode" className="block text-sm font-semibold tracking-wide uppercase text-slate-300 mb-2">
                   ZIP Code
                 </label>
-                <input
-                  type="text"
-                  id="zipcode"
-                  name="zipcode"
-                  value={formData.zipcode}
-                  onChange={handleInputChange}
-                  placeholder="90210"
-                  className={`input-field ${errors.zipcode ? 'error' : formData.zipcode.length === 5 && !errors.zipcode ? 'valid' : ''}`}
-                  maxLength={5}
-                  aria-label="ZIP Code"
-                  aria-invalid={errors.zipcode ? 'true' : 'false'}
-                  aria-describedby={errors.zipcode ? 'zipcode-error' : undefined}
-                />
+                <div className="relative">
+                  <input
+                    type="text"
+                    id="zipcode"
+                    name="zipcode"
+                    value={formData.zipcode}
+                    onChange={handleInputChange}
+                    placeholder="90210"
+                    className={`input-field ${errors.zipcode ? 'error' : formData.zipcode.length === 5 && !errors.zipcode ? 'valid' : ''}`}
+                    maxLength={5}
+                    aria-label="ZIP Code"
+                    aria-invalid={errors.zipcode ? 'true' : 'false'}
+                    aria-describedby={errors.zipcode ? 'zipcode-error' : undefined}
+                  />
+                  {formData.zipcode.length === 5 && !errors.zipcode && (
+                    <motion.div
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2"
+                      initial={{ scale: 0, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ type: 'spring', stiffness: 500, damping: 25 }}
+                    >
+                      <svg className="w-5 h-5 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                    </motion.div>
+                  )}
+                  {errors.zipcode && (
+                    <motion.div
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2"
+                      initial={{ scale: 0, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ type: 'spring', stiffness: 500, damping: 25 }}
+                    >
+                      <svg className="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                      </svg>
+                    </motion.div>
+                  )}
+                </div>
                 {errors.zipcode && (
-                  <p id="zipcode-error" className="text-red-400 text-xs mt-2 flex items-center" role="alert">
+                  <motion.p
+                    id="zipcode-error"
+                    className="text-red-400 text-xs mt-2 flex items-center"
+                    role="alert"
+                    initial={{ opacity: 0, y: -5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
                     <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                     </svg>
                     {errors.zipcode}
-                  </p>
+                  </motion.p>
                 )}
               </div>
 
@@ -267,13 +409,15 @@ function App() {
               </div>
 
               {/* Submit Button */}
-              <button
+              <motion.button
                 type="submit"
                 disabled={!isFormValid || isLoading}
                 className={`btn-primary mt-6 flex items-center justify-center space-x-2 ${
                   !isFormValid || isLoading ? 'opacity-50 cursor-not-allowed' : ''
                 }`}
                 aria-label={isLoading ? 'Analyzing risk' : 'Analyze risk'}
+                whileHover={!isFormValid || isLoading || shouldReduceMotion ? {} : { scale: 1.02 }}
+                whileTap={!isFormValid || isLoading || shouldReduceMotion ? {} : { scale: 0.98 }}
               >
                 {isLoading ? (
                   <>
@@ -288,12 +432,16 @@ function App() {
                     <span>Analyze Risk</span>
                   </>
                 )}
-              </button>
+              </motion.button>
             </form>
-          </div>
+          </motion.div>
 
           {/* Risk Score Card - Top Center */}
-          <div className="lg:col-span-4 glass-card p-8 hover:shadow-glow-blue transition-all duration-300">
+          <motion.div
+            className="lg:col-span-4 glass-card p-8 hover:shadow-glow-blue transition-all duration-300"
+            variants={cardVariants}
+            whileHover={shouldReduceMotion ? {} : { y: -2, transition: { duration: 0.2 } }}
+          >
             {enhancedResult ? (
               <div className="text-center">
                 <h3 className="text-2xl font-bold text-slate-50 mb-6 flex items-center justify-center">
@@ -302,29 +450,54 @@ function App() {
                   </svg>
                   Risk Score
                 </h3>
-                <div className={`relative w-44 h-44 mx-auto mb-6 rounded-full flex items-center justify-center border-4 ${
-                  enhancedResult.riskPercentage >= 70 ? 'bg-gradient-to-br from-red-600 to-red-700 border-red-500/30 shadow-glow-red' :
-                  enhancedResult.riskPercentage >= 40 ? 'bg-gradient-to-br from-amber-500 to-orange-600 border-amber-400/30 shadow-glow-amber' :
-                  'bg-gradient-to-br from-emerald-600 to-emerald-700 border-emerald-500/30 shadow-glow-emerald'
-                }`}>
+                <motion.div
+                  className={`relative w-44 h-44 mx-auto mb-6 rounded-full flex items-center justify-center border-4 ${
+                    enhancedResult.riskPercentage >= 70 ? 'bg-gradient-to-br from-red-600 to-red-700 border-red-500/30 shadow-glow-red' :
+                    enhancedResult.riskPercentage >= 40 ? 'bg-gradient-to-br from-amber-500 to-orange-600 border-amber-400/30 shadow-glow-amber' :
+                    'bg-gradient-to-br from-emerald-600 to-emerald-700 border-emerald-500/30 shadow-glow-emerald'
+                  }`}
+                  variants={scoreVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
                   <div className="text-white text-center">
-                    <div className="text-5xl font-extrabold mb-1">{enhancedResult.riskPercentage}%</div>
+                    <motion.div
+                      className="text-5xl font-extrabold mb-1"
+                      key={animateScore}
+                    >
+                      {animateScore}%
+                    </motion.div>
                     <div className="text-lg font-semibold opacity-90">{enhancedResult.riskLevel}</div>
                   </div>
-                </div>
-                <p className="text-slate-300 text-sm mb-2">
+                </motion.div>
+                <motion.p
+                  className="text-slate-300 text-sm mb-2"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: shouldReduceMotion ? 0 : 0.4 }}
+                >
                   <span className="font-semibold text-slate-200">Confidence:</span> {enhancedResult.confidence}%
-                </p>
-                <p className="text-slate-400 text-xs">
+                </motion.p>
+                <motion.p
+                  className="text-slate-400 text-xs"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: shouldReduceMotion ? 0 : 0.5 }}
+                >
                   {enhancedResult.location.time} on {enhancedResult.location.day} • ZIP {enhancedResult.location.zipcode}
-                </p>
+                </motion.p>
               </div>
             ) : isLoading ? (
-              <div className="text-center py-8">
+              <motion.div
+                className="text-center py-8"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+              >
                 <div className="w-16 h-16 border-4 border-slate-700 border-t-blue-500 rounded-full animate-spin mx-auto mb-4"></div>
                 <p className="text-slate-200 font-semibold text-lg">Analyzing Risk...</p>
                 <p className="text-slate-400 text-sm mt-2">Processing location and timing data</p>
-              </div>
+              </motion.div>
             ) : (
               <div className="text-center py-8">
                 <div className="w-20 h-20 bg-slate-700/50 rounded-full flex items-center justify-center mx-auto mb-4 border border-slate-600/50">
@@ -335,14 +508,16 @@ function App() {
                 <p className="text-slate-400 text-sm">Fill out the form to see your risk analysis</p>
               </div>
             )}
-          </div>
+          </motion.div>
 
           {/* Risk Factors Card - Top Right */}
-          <div className="lg:col-span-4 glass-card p-8 hover:shadow-glow-blue transition-all duration-300">
+          <motion.div
+            className="lg:col-span-4 glass-card p-8 hover:shadow-glow-blue transition-all duration-300"
+            variants={cardVariants}
+            whileHover={shouldReduceMotion ? {} : { y: -2, transition: { duration: 0.2 } }}
+          >
             <h3 className="text-2xl font-bold text-slate-50 mb-6 flex items-center">
-              <svg className="w-6 h-6 mr-2 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-              </svg>
+              <FaExclamationTriangle className="w-6 h-6 mr-2 text-violet-500" />
               Risk Factors
             </h3>
             {enhancedResult ? (
@@ -351,7 +526,7 @@ function App() {
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
                     <span className="text-sm font-semibold text-slate-200 flex items-center">
-                      <span className="text-2xl mr-2">📍</span>
+                      <FaMapMarkerAlt className="text-2xl mr-2 text-slate-200" />
                       Location (ZIP {enhancedResult.location.zipcode})
                     </span>
                     <span className={`px-3 py-1 rounded-full text-xs font-bold ${
@@ -363,14 +538,17 @@ function App() {
                     </span>
                   </div>
                   <div className="w-full bg-slate-700/50 rounded-full h-3 overflow-hidden border border-slate-600/30">
-                    <div
-                      className={`h-3 rounded-full transition-all duration-1000 ${
+                    <motion.div
+                      className={`h-3 rounded-full ${
                         enhancedResult.analysis.factors.location.percentage >= 70 ? 'bg-gradient-to-r from-red-600 to-red-700 shadow-glow-red' :
                         enhancedResult.analysis.factors.location.percentage >= 40 ? 'bg-gradient-to-r from-amber-500 to-orange-600 shadow-glow-amber' :
                         'bg-gradient-to-r from-emerald-600 to-emerald-700 shadow-glow-emerald'
                       }`}
-                      style={{ width: `${enhancedResult.analysis.factors.location.percentage}%` }}
-                    ></div>
+                      variants={progressBarVariants}
+                      initial="hidden"
+                      animate="visible"
+                      custom={enhancedResult.analysis.factors.location.percentage}
+                    ></motion.div>
                   </div>
                 </div>
 
@@ -378,7 +556,7 @@ function App() {
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
                     <span className="text-sm font-semibold text-slate-200 flex items-center">
-                      <span className="text-2xl mr-2">🕐</span>
+                      <FaClock className="text-2xl mr-2 text-slate-200" />
                       Time ({enhancedResult.location.time})
                     </span>
                     <span className={`px-3 py-1 rounded-full text-xs font-bold ${
@@ -390,14 +568,18 @@ function App() {
                     </span>
                   </div>
                   <div className="w-full bg-slate-700/50 rounded-full h-3 overflow-hidden border border-slate-600/30">
-                    <div
-                      className={`h-3 rounded-full transition-all duration-1000 ${
+                    <motion.div
+                      className={`h-3 rounded-full ${
                         enhancedResult.analysis.factors.timing.percentage >= 70 ? 'bg-gradient-to-r from-red-600 to-red-700 shadow-glow-red' :
                         enhancedResult.analysis.factors.timing.percentage >= 40 ? 'bg-gradient-to-r from-amber-500 to-orange-600 shadow-glow-amber' :
                         'bg-gradient-to-r from-emerald-600 to-emerald-700 shadow-glow-emerald'
                       }`}
-                      style={{ width: `${enhancedResult.analysis.factors.timing.percentage}%` }}
-                    ></div>
+                      variants={progressBarVariants}
+                      initial="hidden"
+                      animate="visible"
+                      custom={enhancedResult.analysis.factors.timing.percentage}
+                      transition={{ delay: shouldReduceMotion ? 0 : 0.45 }}
+                    ></motion.div>
                   </div>
                 </div>
 
@@ -405,7 +587,7 @@ function App() {
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
                     <span className="text-sm font-semibold text-slate-200 flex items-center">
-                      <span className="text-2xl mr-2">📅</span>
+                      <FaCalendarDay className="text-2xl mr-2 text-slate-200" />
                       Day ({enhancedResult.location.day})
                     </span>
                     <span className={`px-3 py-1 rounded-full text-xs font-bold ${
@@ -417,14 +599,18 @@ function App() {
                     </span>
                   </div>
                   <div className="w-full bg-slate-700/50 rounded-full h-3 overflow-hidden border border-slate-600/30">
-                    <div
-                      className={`h-3 rounded-full transition-all duration-1000 ${
+                    <motion.div
+                      className={`h-3 rounded-full ${
                         enhancedResult.analysis.factors.dayOfWeek.percentage >= 70 ? 'bg-gradient-to-r from-red-600 to-red-700 shadow-glow-red' :
                         enhancedResult.analysis.factors.dayOfWeek.percentage >= 40 ? 'bg-gradient-to-r from-amber-500 to-orange-600 shadow-glow-amber' :
                         'bg-gradient-to-r from-emerald-600 to-emerald-700 shadow-glow-emerald'
                       }`}
-                      style={{ width: `${enhancedResult.analysis.factors.dayOfWeek.percentage}%` }}
-                    ></div>
+                      variants={progressBarVariants}
+                      initial="hidden"
+                      animate="visible"
+                      custom={enhancedResult.analysis.factors.dayOfWeek.percentage}
+                      transition={{ delay: shouldReduceMotion ? 0 : 0.6 }}
+                    ></motion.div>
                   </div>
                 </div>
               </div>
@@ -438,13 +624,18 @@ function App() {
                 <p className="text-slate-400 text-sm">Risk breakdown will appear here after analysis</p>
               </div>
             )}
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
 
         {/* Recommendations Section - Bottom Row */}
         {enhancedResult && (
-          <div className="mt-6 md:mt-8 glass-card p-8 hover:shadow-glow-blue transition-all duration-300">
+          <motion.div
+            className="mt-6 md:mt-8 glass-card p-8 hover:shadow-glow-blue transition-all duration-300"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: shouldReduceMotion ? 0.01 : 0.5, delay: shouldReduceMotion ? 0 : 0.3 }}
+          >
             <h4 className="text-2xl font-bold text-slate-50 mb-6 flex items-center">
               <svg className="w-6 h-6 mr-2 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707" />
@@ -453,30 +644,40 @@ function App() {
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {enhancedResult.analysis.recommendations.map((rec, index) => (
-                <div key={index} className="flex items-start space-x-3 p-4 bg-amber-900/20 rounded-lg border border-amber-500/30 hover:bg-amber-900/30 hover:border-amber-500/50 transition-all duration-200">
+                <motion.div
+                  key={index}
+                  className="flex items-start space-x-3 p-4 bg-amber-900/20 rounded-lg border border-amber-500/30 hover:bg-amber-900/30 hover:border-amber-500/50 transition-all duration-200"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    duration: shouldReduceMotion ? 0.01 : 0.3,
+                    delay: shouldReduceMotion ? 0 : 0.5 + index * 0.1
+                  }}
+                  whileHover={shouldReduceMotion ? {} : { scale: 1.02 }}
+                >
                   <div className="w-7 h-7 bg-amber-500/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 border border-amber-500/30">
                     <svg className="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                   </div>
                   <span className="text-slate-200 text-sm font-medium leading-relaxed">{rec}</span>
-                </div>
+                </motion.div>
               ))}
             </div>
-          </div>
+          </motion.div>
         )}
 
         {/* Basic Result (fallback) */}
         {result && !enhancedResult && (
-          <div className={`risk-card ${result.includes('High') ? 'high' : 'low'}`}>
+          <div className={`risk-card ${result.includes('High') ? 'high' : result.includes('Medium') ? 'medium' : 'low'}`}>
             {result}
           </div>
         )}
 
         {/* Disclaimer */}
-        <div className="mt-8 p-4 bg-slate-50 border border-slate-200 rounded-lg">
-          <p className="text-sm text-slate-600 leading-relaxed">
-            <strong>Disclaimer:</strong> This tool is for informational purposes only and should not be used to plan, encourage, or engage in any illegal activities. The risk predictions are based on historical data analysis and should not be considered as legal advice or a guarantee of safety.
+        <div className="mt-8 p-6 glass-card border-l-4 border-blue-500">
+          <p className="text-sm text-slate-300 leading-relaxed">
+            <strong className="text-slate-100">Disclaimer:</strong> This tool is for informational purposes only and should not be used to plan, encourage, or engage in any illegal activities. The risk predictions are based on historical data analysis and should not be considered as legal advice or a guarantee of safety.
           </p>
         </div>
       </div>
