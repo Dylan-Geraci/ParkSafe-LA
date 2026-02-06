@@ -7,14 +7,20 @@ import RiskFactorsCard from './components/results/RiskFactorsCard';
 import RecommendationsCard from './components/results/RecommendationsCard';
 import RiskTimelineChart from './components/visualizations/RiskTimelineChart';
 import SearchHistory from './components/history/SearchHistory';
-import { ToastContainer } from './components/ui/Toast';
+import ExportButton from './components/results/ExportButton';
+import ShareButton from './components/results/ShareButton';
+import OfflineBanner from './components/ui/OfflineBanner';
+import { ToastContainer, showToast } from './components/ui/Toast';
 import { useRiskPrediction } from './hooks/useRiskPrediction';
 import { useSearchHistory } from './hooks/useSearchHistory';
+import { useNetworkStatus } from './hooks/useNetworkStatus';
+import { decodeSearchParams } from './utils/urlParams';
 
 function App() {
   const shouldReduceMotion = useReducedMotion();
   const { result, enhancedResult, isLoading, predict } = useRiskPrediction();
   const { history, addToHistory, clearHistory, removeFromHistory } = useSearchHistory();
+  const { isOnline, wasOffline } = useNetworkStatus();
   const formRef = useRef(null);
   const lastFormDataRef = useRef(null);
 
@@ -44,9 +50,25 @@ function App() {
   };
 
   const handleFormSubmit = async (formData) => {
+    // Check if online before submitting
+    if (!isOnline) {
+      showToast.error('You are offline. Please check your connection.');
+      return;
+    }
+
     lastFormDataRef.current = formData;
     await predict(formData);
   };
+
+  // Load form data from URL parameters on mount
+  useEffect(() => {
+    const urlParams = decodeSearchParams();
+    if (urlParams && formRef.current) {
+      formRef.current.loadFormData(urlParams);
+      // Optionally auto-submit
+      // handleFormSubmit(urlParams);
+    }
+  }, []); // Intentionally empty - only run on mount
 
   // Save to history when result is received
   useEffect(() => {
@@ -74,6 +96,9 @@ function App() {
 
   return (
     <div className="min-h-screen professional-bg p-4 md:p-8">
+      {/* Offline Banner */}
+      <OfflineBanner isOnline={isOnline} wasOffline={wasOffline} />
+
       {/* Toast Notifications */}
       <ToastContainer />
       {/* Skip to main content link for keyboard navigation */}
@@ -131,7 +156,11 @@ function App() {
               </svg>
               Risk Assessment
             </h3>
-            <RiskAssessmentForm ref={formRef} onSubmit={handleFormSubmit} isLoading={isLoading} />
+            <RiskAssessmentForm
+              ref={formRef}
+              onSubmit={handleFormSubmit}
+              isLoading={isLoading || !isOnline}
+            />
           </Card>
 
           {/* Risk Score Card */}
@@ -163,6 +192,28 @@ function App() {
             recommendations={enhancedResult.analysis.recommendations}
             shouldReduceMotion={shouldReduceMotion}
           />
+        )}
+
+        {/* Export and Share Actions */}
+        {enhancedResult && lastFormDataRef.current && (
+          <motion.div
+            className="mt-6 flex flex-wrap gap-4 justify-center items-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: shouldReduceMotion ? 0.01 : 0.4, delay: shouldReduceMotion ? 0 : 0.3 }}
+          >
+            <ExportButton
+              enhancedResult={enhancedResult}
+              formData={lastFormDataRef.current}
+              onSuccess={(msg) => showToast.success(msg)}
+              onError={(msg) => showToast.error(msg)}
+            />
+            <ShareButton
+              formData={lastFormDataRef.current}
+              onSuccess={(msg) => showToast.success(msg)}
+              onError={(msg) => showToast.warning(msg)}
+            />
+          </motion.div>
         )}
 
         {/* Risk Timeline Chart */}

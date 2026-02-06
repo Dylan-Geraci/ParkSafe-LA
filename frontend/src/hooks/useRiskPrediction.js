@@ -29,6 +29,7 @@ export const useRiskPrediction = () => {
         headers: {
           'Content-Type': 'application/json',
         },
+        timeout: 30000, // 30 second timeout
       });
 
       // Extract both basic and enhanced results
@@ -45,7 +46,24 @@ export const useRiskPrediction = () => {
       return null;
     } catch (err) {
       console.error('Error making prediction:', err);
-      const errorMessage = 'Unable to make prediction. Please check your connection and try again.';
+
+      // Determine specific error message based on error type
+      let errorMessage = 'Unable to make prediction. Please try again.';
+
+      if (err.code === 'ECONNABORTED' || err.message?.includes('timeout')) {
+        errorMessage = 'Request timed out. The server is taking too long to respond. Please try again.';
+      } else if (err.response?.status === 404) {
+        errorMessage = 'Service not found. The API endpoint may be unavailable.';
+      } else if (err.response?.status === 500) {
+        errorMessage = 'Server error. Please try again in a few moments.';
+      } else if (err.response?.status === 400) {
+        errorMessage = err.response?.data?.error || 'Invalid request. Please check your input.';
+      } else if (!navigator.onLine) {
+        errorMessage = 'You appear to be offline. Check your internet connection.';
+      } else if (err.message === 'Network Error') {
+        errorMessage = 'Network error. Please check your connection and try again.';
+      }
+
       setResult(errorMessage);
       setError(errorMessage);
 

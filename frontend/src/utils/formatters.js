@@ -47,6 +47,17 @@ export const getRiskColorClasses = (percentage) => {
 };
 
 /**
+ * Gets the color value (not CSS class) for PDF generation
+ * @param {number} percentage - Risk percentage (0-100)
+ * @returns {string} Color identifier ('high', 'medium', or 'low')
+ */
+export const getRiskColor = (percentage) => {
+  if (percentage >= RISK_THRESHOLDS.HIGH) return 'high';
+  if (percentage >= RISK_THRESHOLDS.MEDIUM) return 'medium';
+  return 'low';
+};
+
+/**
  * Formats hour to ensure it's a valid 2-digit string
  * @param {string} value - Raw hour input value
  * @returns {string} Formatted hour string
