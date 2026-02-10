@@ -17,8 +17,11 @@ const HistoryItem = ({ item, onSelect, onRemove, shouldReduceMotion }) => {
   return (
     <motion.div
       className="glass-card p-4 hover:shadow-glow-indigo transition-all duration-200 cursor-pointer group"
+      layout
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      transition={{ duration: 0.2 }}
       whileHover={shouldReduceMotion ? {} : { y: -2, scale: 1.01 }}
       onClick={() => onSelect(formData)}
     >

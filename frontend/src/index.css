@@ -128,7 +128,7 @@
 
   /* Glass effect card */
   .glass-card {
-    @apply bg-white/90 backdrop-blur-xl border border-blue-100 rounded-2xl shadow-lg shadow-blue-500/10;
+    @apply bg-white border border-slate-200 rounded-2xl shadow-md;
   }
 
   /* Reduced motion support */
