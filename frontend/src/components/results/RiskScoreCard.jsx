@@ -72,8 +72,8 @@ const RiskScoreCard = ({ result, isLoading, shouldReduceMotion }) => {
   if (!result) {
     return (
       <div className="text-center py-8">
-        <div className="w-20 h-20 bg-slate-700/50 rounded-full flex items-center justify-center mx-auto mb-4 border border-slate-600/50">
-          <svg className="w-10 h-10 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4 border border-slate-300">
+          <svg className="w-10 h-10 text-slate-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -82,7 +82,7 @@ const RiskScoreCard = ({ result, isLoading, shouldReduceMotion }) => {
             />
           </svg>
         </div>
-        <p className="text-slate-400 text-sm">Fill out the form to see your risk analysis</p>
+        <p className="text-slate-900 text-sm font-medium">Fill out the form to see your risk analysis</p>
       </div>
     );
   }
@@ -92,8 +92,8 @@ const RiskScoreCard = ({ result, isLoading, shouldReduceMotion }) => {
 
   return (
     <div className="text-center">
-      <h3 className="text-2xl font-bold text-slate-50 mb-6 flex items-center justify-center">
-        <svg className="w-6 h-6 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <h3 className="text-2xl font-bold text-slate-900 mb-6 flex items-center justify-center font-heading">
+        <svg className="w-6 h-6 mr-2 text-slate-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -119,16 +119,16 @@ const RiskScoreCard = ({ result, isLoading, shouldReduceMotion }) => {
       </motion.div>
 
       <motion.p
-        className="text-slate-300 text-sm mb-2"
+        className="text-slate-700 text-sm mb-2"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: shouldReduceMotion ? 0 : 0.4 }}
       >
-        <span className="font-semibold text-slate-200">Confidence:</span> {result.confidence}%
+        <span className="font-semibold text-slate-900">Confidence:</span> {result.confidence}%
       </motion.p>
 
       <motion.p
-        className="text-slate-400 text-xs"
+        className="text-slate-600 text-xs"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: shouldReduceMotion ? 0 : 0.5 }}

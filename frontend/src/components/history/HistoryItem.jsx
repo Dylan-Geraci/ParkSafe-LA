@@ -16,7 +16,7 @@ const HistoryItem = ({ item, onSelect, onRemove, shouldReduceMotion }) => {
 
   return (
     <motion.div
-      className="glass-card p-4 hover:shadow-glow-blue transition-all duration-200 cursor-pointer group"
+      className="glass-card p-4 hover:shadow-glow-indigo transition-all duration-200 cursor-pointer group"
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={shouldReduceMotion ? {} : { y: -2, scale: 1.01 }}
@@ -34,17 +34,17 @@ const HistoryItem = ({ item, onSelect, onRemove, shouldReduceMotion }) => {
           </div>
 
           {/* Details */}
-          <div className="space-y-1 text-sm text-slate-300">
+          <div className="space-y-1 text-sm text-slate-700">
             <div className="flex items-center gap-2">
-              <FaMapMarkerAlt className="text-slate-400 flex-shrink-0" />
+              <FaMapMarkerAlt className="text-slate-500 flex-shrink-0" />
               <span className="truncate">ZIP {formData.zipcode}</span>
             </div>
             <div className="flex items-center gap-2">
-              <FaCalendarDay className="text-slate-400 flex-shrink-0" />
+              <FaCalendarDay className="text-slate-500 flex-shrink-0" />
               <span className="truncate">{formData.day_of_week}</span>
             </div>
             <div className="flex items-center gap-2">
-              <FaClock className="text-slate-400 flex-shrink-0" />
+              <FaClock className="text-slate-500 flex-shrink-0" />
               <span className="truncate">
                 {formData.hour}:00 {formData.am_pm}
               </span>
@@ -58,10 +58,10 @@ const HistoryItem = ({ item, onSelect, onRemove, shouldReduceMotion }) => {
             e.stopPropagation();
             onRemove(item.id);
           }}
-          className="opacity-0 group-hover:opacity-100 transition-opacity p-2 hover:bg-red-900/30 rounded-lg"
+          className="opacity-0 group-hover:opacity-100 transition-opacity p-2 hover:bg-red-50 rounded-lg"
           aria-label="Remove from history"
         >
-          <FaTrash className="text-red-400 text-sm" />
+          <FaTrash className="text-red-500 text-sm" />
         </button>
       </div>
     </motion.div>

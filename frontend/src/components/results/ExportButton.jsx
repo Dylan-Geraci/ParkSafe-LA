@@ -62,7 +62,7 @@ const ExportButton = ({ enhancedResult, formData, disabled = false, onSuccess, o
           ${
             disabled || isGenerating
               ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
-              : 'bg-gray-800/50 backdrop-blur-sm text-white hover:bg-gray-700/70 hover:shadow-lg hover:shadow-teal-500/20'
+              : 'bg-gray-800/50 backdrop-blur-sm text-white hover:bg-gray-700/70 hover:shadow-lg hover:shadow-indigo-500/20'
           }
           border border-gray-700/50
         `}
@@ -83,7 +83,7 @@ const ExportButton = ({ enhancedResult, formData, disabled = false, onSuccess, o
                   ease: 'linear',
                 },
               }}
-              className="text-teal-400"
+              className="text-indigo-400"
             >
               <FaSpinner />
             </motion.div>

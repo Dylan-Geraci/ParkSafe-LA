@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaHistory, FaChevronDown, FaChevronUp, FaTrash } from 'react-icons/fa';
+import { FaChevronDown, FaChevronUp, FaTrash } from 'react-icons/fa';
+import { ParkingTicketIcon } from '../ui/ParkingIcons';
 import HistoryItem from './HistoryItem';
 
 /**
@@ -24,13 +25,13 @@ const SearchHistory = ({ history, onSelect, onRemove, onClear, shouldReduceMotio
       {/* Header */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full p-6 flex items-center justify-between hover:bg-slate-800/30 transition-colors"
+        className="w-full p-6 flex items-center justify-between hover:bg-blue-50 transition-colors"
       >
         <div className="flex items-center gap-3">
-          <FaHistory className="text-blue-500 text-xl" />
+          <ParkingTicketIcon className="text-primary-600 w-6 h-6" />
           <div className="text-left">
-            <h4 className="text-xl font-bold text-slate-50">Search History</h4>
-            <p className="text-sm text-slate-400">
+            <h4 className="text-xl font-bold text-slate-900 font-heading">Search History</h4>
+            <p className="text-sm text-slate-600">
               {history.length} {history.length === 1 ? 'search' : 'searches'} saved
             </p>
           </div>
@@ -48,7 +49,7 @@ const SearchHistory = ({ history, onSelect, onRemove, onClear, shouldReduceMotio
                   onClear();
                 }
               }}
-              className="px-3 py-1.5 text-sm bg-red-900/30 hover:bg-red-900/50 text-red-300 rounded-lg border border-red-500/30 transition-colors flex items-center gap-2"
+              className="px-3 py-1.5 text-sm bg-red-50 hover:bg-red-100 text-red-600 rounded-lg border border-red-200 transition-colors flex items-center gap-2"
               aria-label="Clear all history"
             >
               <FaTrash className="text-xs" />
@@ -62,9 +63,9 @@ const SearchHistory = ({ history, onSelect, onRemove, onClear, shouldReduceMotio
             transition={{ duration: 0.2 }}
           >
             {isExpanded ? (
-              <FaChevronUp className="text-slate-400" />
+              <FaChevronUp className="text-slate-600" />
             ) : (
-              <FaChevronDown className="text-slate-400" />
+              <FaChevronDown className="text-slate-600" />
             )}
           </motion.div>
         </div>
@@ -78,7 +79,7 @@ const SearchHistory = ({ history, onSelect, onRemove, onClear, shouldReduceMotio
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: shouldReduceMotion ? 0.01 : 0.3 }}
-            className="border-t border-slate-700/50"
+            className="border-t border-blue-200"
           >
             <div className="p-4 space-y-3 max-h-96 overflow-y-auto">
               {history.map((item, index) => (

@@ -39,7 +39,7 @@ const OfflineBanner = ({ isOnline, wasOffline }) => {
           exit={{ y: -100, opacity: 0 }}
           transition={{ type: 'spring', stiffness: 300, damping: 30 }}
           className="fixed top-0 left-0 right-0 z-50 flex items-center justify-center
-                     bg-gradient-to-r from-teal-500 to-cyan-500
+                     bg-gradient-to-r from-indigo-500 to-blue-500
                      px-4 py-3 shadow-lg"
           role="alert"
           aria-live="polite"

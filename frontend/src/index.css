@@ -4,27 +4,59 @@
 
 @layer base {
   body {
-    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Space Grotesk', 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Sora', 'Inter', 'Segoe UI', sans-serif;
   }
 }
 
 @layer components {
-  /* Dark professional gradient background */
+  /* Animated light blue gradient background */
+  @keyframes gradientShift {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
   .professional-bg {
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+    background: linear-gradient(
+      135deg,
+      #eff6ff 0%,
+      #dbeafe 25%,
+      #e0e7ff 50%,
+      #dbeafe 75%,
+      #f0f9ff 100%
+    );
+    background-size: 200% 200%;
+    animation: gradientShift 15s ease infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .professional-bg {
+      animation: none;
+      background-size: 100% 100%;
+    }
   }
 
   /* Enhanced multi-layer shadow for glass effect cards */
   .card-shadow {
     box-shadow:
-      0 20px 25px -5px rgba(0, 0, 0, 0.4),
-      0 10px 10px -5px rgba(0, 0, 0, 0.3),
-      inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+      0 20px 25px -5px rgba(0, 0, 0, 0.1),
+      0 10px 10px -5px rgba(0, 0, 0, 0.05),
+      0 4px 6px -2px rgba(0, 0, 0, 0.05);
   }
 
-  /* Dark theme input with enhanced states */
+  /* Light theme input with enhanced states */
   .input-field {
-    @apply w-full px-4 py-3 border border-slate-600 rounded-lg text-slate-100 bg-slate-800/50 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 focus:shadow-lg focus:shadow-blue-500/10 hover:border-slate-500;
+    @apply w-full px-4 py-3 border border-blue-200 rounded-lg text-slate-900 bg-white backdrop-blur-sm transition-all duration-200 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/30 focus:shadow-lg focus:shadow-primary-500/10 hover:border-blue-300;
   }
 
   /* Enhanced select styling to match inputs */
@@ -52,9 +84,9 @@
     @apply border-emerald-500 bg-emerald-900/20 focus:border-emerald-500 focus:ring-emerald-500/30;
   }
 
-  /* Enhanced primary button with glow effect */
+  /* Enhanced primary button with modern style */
   .btn-primary {
-    @apply w-full py-4 px-6 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-lg transition-all duration-200 transform hover:-translate-y-0.5 hover:shadow-glow-blue active:translate-y-0 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:hover:from-blue-600 disabled:hover:to-blue-700 disabled:shadow-none;
+    @apply w-full py-4 px-6 bg-white border-2 border-slate-900 hover:bg-slate-50 text-slate-900 font-semibold rounded-lg transition-all duration-200 transform hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:hover:bg-white disabled:shadow-none;
   }
 
   /* Dark theme risk cards with glow effects */
@@ -76,27 +108,27 @@
 
   /* Colored accent divider */
   .section-divider {
-    @apply w-12 h-1 bg-gradient-to-r from-blue-500 to-violet-500 mx-auto rounded-full;
+    @apply w-12 h-1 bg-gradient-to-r from-primary-400 to-primary-600 mx-auto rounded-full;
   }
 
   /* Skeleton loading animation */
   .skeleton-box {
-    @apply bg-slate-700/50 animate-pulse rounded-lg;
+    @apply bg-blue-100/50 animate-pulse rounded-lg;
   }
 
   /* Glow effect utility */
   .glow-effect {
-    @apply shadow-glow-blue animate-glow;
+    @apply shadow-glow-indigo animate-glow;
   }
 
   /* Focus ring for accessibility */
   .focus-ring {
-    @apply focus:outline-none focus:ring-3 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-900;
+    @apply focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-900;
   }
 
   /* Glass effect card */
   .glass-card {
-    @apply bg-slate-800/50 backdrop-blur-xl border border-slate-700/50 rounded-2xl shadow-2xl shadow-black/20;
+    @apply bg-white/90 backdrop-blur-xl border border-blue-100 rounded-2xl shadow-lg shadow-blue-500/10;
   }
 
   /* Reduced motion support */

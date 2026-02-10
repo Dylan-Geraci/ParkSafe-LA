@@ -62,7 +62,7 @@ const ShareButton = ({ formData, disabled = false, onSuccess, onError }) => {
           ${
             disabled
               ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
-              : 'bg-gray-800/50 backdrop-blur-sm text-white hover:bg-gray-700/70 hover:shadow-lg hover:shadow-teal-500/20'
+              : 'bg-gray-800/50 backdrop-blur-sm text-white hover:bg-gray-700/70 hover:shadow-lg hover:shadow-indigo-500/20'
           }
           border border-gray-700/50
         `}
@@ -76,7 +76,7 @@ const ShareButton = ({ formData, disabled = false, onSuccess, onError }) => {
               initial={{ scale: 0, rotate: -180 }}
               animate={{ scale: 1, rotate: 0 }}
               exit={{ scale: 0, rotate: 180 }}
-              className="text-teal-400"
+              className="text-indigo-400"
             >
               <FaCheck />
             </motion.div>

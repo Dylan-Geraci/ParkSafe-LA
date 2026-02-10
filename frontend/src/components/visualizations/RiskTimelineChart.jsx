@@ -73,12 +73,12 @@ const RiskTimelineChart = ({ currentResult, onTimeSelect, shouldReduceMotion }) 
       const colorClasses = getRiskColorClasses(data.risk);
 
       return (
-        <div className="glass-card p-3 border border-slate-600/50">
-          <p className="text-slate-200 font-semibold mb-1">{data.label}</p>
-          <p className={`text-sm font-bold`}>
+        <div className="glass-card p-3 border border-blue-200">
+          <p className="text-slate-900 font-semibold mb-1">{data.label}</p>
+          <p className={`text-sm font-bold text-slate-800`}>
             Risk: <span className={colorClasses.badge.split(' ')[1]}>{data.risk}%</span>
           </p>
-          <p className="text-xs text-slate-400 mt-1">Click to analyze this time</p>
+          <p className="text-xs text-slate-600 mt-1">Click to analyze this time</p>
         </div>
       );
     }
@@ -99,7 +99,7 @@ const RiskTimelineChart = ({ currentResult, onTimeSelect, shouldReduceMotion }) 
     const colorClasses = getRiskColorClasses(risk);
 
     if (isSelected) {
-      return '#3b82f6'; // Blue for selected
+      return '#6366f1'; // Indigo for selected
     }
 
     if (risk >= 70) {
@@ -117,15 +117,15 @@ const RiskTimelineChart = ({ currentResult, onTimeSelect, shouldReduceMotion }) 
 
   return (
     <motion.div
-      className="mt-6 md:mt-8 glass-card p-8 hover:shadow-glow-blue transition-all duration-300"
+      className="mt-6 md:mt-8 glass-card p-8 hover:shadow-glow-indigo transition-all duration-300"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: shouldReduceMotion ? 0.01 : 0.5 }}
     >
       <div className="mb-6">
-        <h4 className="text-2xl font-bold text-slate-50 mb-2 flex items-center">
+        <h4 className="text-2xl font-bold text-slate-900 mb-2 flex items-center font-heading">
           <svg
-            className="w-6 h-6 mr-2 text-violet-500"
+            className="w-6 h-6 mr-2 text-slate-900"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -137,9 +137,9 @@ const RiskTimelineChart = ({ currentResult, onTimeSelect, shouldReduceMotion }) 
               d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
             />
           </svg>
-          Risk Timeline
+          {currentResult ? `${currentResult.location.zipcode} Risk Timeline` : 'General Risk Timeline'}
         </h4>
-        <p className="text-slate-400 text-sm">
+        <p className="text-slate-600 text-sm">
           Explore how parking risk varies throughout the day. Click any bar to analyze that time.
         </p>
       </div>
@@ -155,15 +155,15 @@ const RiskTimelineChart = ({ currentResult, onTimeSelect, shouldReduceMotion }) 
           }}
           onMouseLeave={() => setHoveredBar(null)}
         >
-          <CartesianGrid strokeDasharray="3 3" stroke="#334155" opacity={0.2} />
+          <CartesianGrid strokeDasharray="3 3" stroke="#cbd5e1" opacity={0.5} />
           <XAxis
             dataKey="label"
-            stroke="#94a3b8"
-            tick={{ fill: '#94a3b8', fontSize: 11 }}
+            stroke="#64748b"
+            tick={{ fill: '#64748b', fontSize: 11 }}
             interval={1}
           />
-          <YAxis stroke="#94a3b8" tick={{ fill: '#94a3b8', fontSize: 12 }} domain={[0, 100]} />
-          <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(100, 116, 139, 0.1)' }} />
+          <YAxis stroke="#64748b" tick={{ fill: '#64748b', fontSize: 12 }} domain={[0, 100]} />
+          <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(59, 130, 246, 0.1)' }} />
           <Bar
             dataKey="risk"
             radius={[4, 4, 0, 0]}
@@ -180,7 +180,7 @@ const RiskTimelineChart = ({ currentResult, onTimeSelect, shouldReduceMotion }) 
         </BarChart>
       </ResponsiveContainer>
 
-      <div className="mt-6 flex items-center justify-center gap-6 text-xs text-slate-400">
+      <div className="mt-6 flex items-center justify-center gap-6 text-xs text-slate-600">
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 rounded bg-emerald-500"></div>
           <span>Low Risk</span>
@@ -195,7 +195,7 @@ const RiskTimelineChart = ({ currentResult, onTimeSelect, shouldReduceMotion }) 
         </div>
         {currentResult && (
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded bg-blue-500"></div>
+            <div className="w-3 h-3 rounded bg-primary-500"></div>
             <span>Current Selection</span>
           </div>
         )}

@@ -104,7 +104,7 @@ function App() {
       {/* Skip to main content link for keyboard navigation */}
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-blue-600 focus:text-white focus:rounded-lg focus:shadow-glow-blue"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary-600 focus:text-white focus:rounded-lg focus:shadow-glow-indigo"
       >
         Skip to main content
       </a>
@@ -119,10 +119,10 @@ function App() {
       <div className="max-w-7xl mx-auto" id="main-content">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-3 bg-gradient-to-r from-blue-400 via-violet-400 to-blue-500 bg-clip-text text-transparent">
+          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-3 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 bg-clip-text text-transparent font-heading">
             ParkSafe-LA Dashboard
           </h1>
-          <h2 className="text-base md:text-lg text-slate-300">
+          <h2 className="text-base md:text-lg text-slate-600">
             Parking Risk Analytics for LA County
           </h2>
         </div>
@@ -140,9 +140,9 @@ function App() {
             variants={cardVariants}
             shouldReduceMotion={shouldReduceMotion}
           >
-            <h3 className="text-2xl font-bold text-slate-50 mb-6 flex items-center">
+            <h3 className="text-2xl font-bold text-slate-900 mb-6 flex items-center font-heading">
               <svg
-                className="w-6 h-6 mr-2 text-blue-500"
+                className="w-6 h-6 mr-2 text-slate-900"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -244,9 +244,9 @@ function App() {
         )}
 
         {/* Disclaimer */}
-        <div className="mt-8 p-6 glass-card border-l-4 border-blue-500">
-          <p className="text-sm text-slate-300 leading-relaxed">
-            <strong className="text-slate-100">Disclaimer:</strong> This tool is for informational
+        <div className="mt-8 p-6 glass-card border-l-4 border-primary-500">
+          <p className="text-sm text-slate-600 leading-relaxed">
+            <strong className="text-slate-900">Disclaimer:</strong> This tool is for informational
             purposes only and should not be used to plan, encourage, or engage in any illegal
             activities. The risk predictions are based on historical data analysis and should not be
             considered as legal advice or a guarantee of safety.

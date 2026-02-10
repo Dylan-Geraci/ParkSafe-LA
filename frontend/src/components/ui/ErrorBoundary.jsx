@@ -66,10 +66,10 @@ class ErrorBoundary extends React.Component {
             <button
               onClick={this.handleReload}
               className="flex items-center gap-2 justify-center w-full
-                         bg-teal-500 hover:bg-teal-600 text-white
+                         bg-indigo-500 hover:bg-indigo-600 text-white
                          px-6 py-3 rounded-lg font-medium
                          transition-all duration-300
-                         hover:shadow-lg hover:shadow-teal-500/50"
+                         hover:shadow-lg hover:shadow-indigo-500/50"
             >
               <FaRedo />
               Reload Page

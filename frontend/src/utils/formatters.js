@@ -22,7 +22,7 @@ export const getRiskColorClasses = (percentage) => {
       gradient: 'bg-gradient-to-br from-red-600 to-red-700',
       border: 'border-red-500/30',
       shadow: 'shadow-glow-red',
-      badge: 'bg-red-900/40 text-red-300 border border-red-500/30',
+      badge: 'bg-red-100 text-red-900 border border-red-300',
       progressBar: 'bg-gradient-to-r from-red-600 to-red-700 shadow-glow-red',
     };
   }
@@ -32,7 +32,7 @@ export const getRiskColorClasses = (percentage) => {
       gradient: 'bg-gradient-to-br from-amber-500 to-orange-600',
       border: 'border-amber-400/30',
       shadow: 'shadow-glow-amber',
-      badge: 'bg-amber-900/40 text-amber-300 border border-amber-500/30',
+      badge: 'bg-amber-100 text-amber-900 border border-amber-300',
       progressBar: 'bg-gradient-to-r from-amber-500 to-orange-600 shadow-glow-amber',
     };
   }
@@ -41,7 +41,7 @@ export const getRiskColorClasses = (percentage) => {
     gradient: 'bg-gradient-to-br from-emerald-600 to-emerald-700',
     border: 'border-emerald-500/30',
     shadow: 'shadow-glow-emerald',
-    badge: 'bg-emerald-900/40 text-emerald-300 border border-emerald-500/30',
+    badge: 'bg-emerald-100 text-emerald-900 border border-emerald-300',
     progressBar: 'bg-gradient-to-r from-emerald-600 to-emerald-700 shadow-glow-emerald',
   };
 };
