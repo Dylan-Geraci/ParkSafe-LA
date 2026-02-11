@@ -1,22 +1,26 @@
-# 🚗 ParkSafe-LA: Parking Citation Risk Predictor
+# ParkSafe-LA: Parking Citation Risk Predictor
 
-A machine learning system that predicts parking citation risk in Los Angeles using real-world data from 23+ million citation records. The project includes both the ML model and a production-ready web application.
+A full-stack machine learning application that predicts parking citation risk in Los Angeles using 23+ million real-world citation records. Features a production-ready Flask API and modern React UI with PDF export, shareable URLs, and offline detection.
+
+🔗 **[Live Demo](https://www.park-safe-la.com)** | 📊 [View Notebooks](./notebooks)
 
 ## Project Overview
 
 **Objective**: Develop a binary classification model to predict parking citation risk (low/high) based on location and time factors.
 
 **Key Achievements**:
-- **67% accuracy** on imbalanced real-world dataset
-- **64% recall** for high-risk predictions
-- **Production deployment** via Flask web application
-- **23M+ records** processed and analyzed
+- **67% accuracy** on imbalanced real-world dataset with 23M+ records
+- **64% recall** for high-risk predictions (critical for user safety)
+- **Production-ready** full-stack web application with modern UI
+- **PDF export, shareable URLs, and offline detection** features
+- **Custom design system** with animated gradients and parking-themed iconography
 
-**Technical Stack**: Python, scikit-learn, Pandas, NumPy, Flask, React.js, Tailwind CSS, Git
+**Technical Stack**: Python, scikit-learn, Pandas, NumPy, Flask, React.js, Framer Motion, Tailwind CSS, localStorage API, Git
 
-## Deployment Setup
-- **Frontend**: Deployed on Vercel (React.js)
-- **Backend**: Cloudflare Workers (migrated from Railway)
+## Deployment
+- **Frontend**: Vercel (React.js with automatic builds)
+- **Backend**: Cloudflare Workers (serverless Flask API)
+- **Model**: Pickle-serialized Random Forest (served via API endpoint)
 
 ## Architecture & Implementation
 
@@ -39,14 +43,17 @@ A machine learning system that predicts parking citation risk in Los Angeles usi
 - **Model Persistence**: Saved as pickle file for production deployment
 
 ### Web Application
-- **Backend**: Flask (Python) with RESTful API
-- **Frontend**: React.js with Tailwind CSS
+- **Backend**: Flask (Python) with RESTful API and ML model integration
+- **Frontend**: React.js with custom hooks, Framer Motion animations, and Tailwind CSS
 - **Features**:
-  - Modern, responsive user interface
-  - Real-time form validation
-  - Professional design with glassmorphism effects
-  - JSON API communication
-  - Cross-platform compatibility
+  - **PDF Export**: Generate downloadable risk assessment reports (jsPDF integration)
+  - **URL Sharing**: Shareable links with encoded search parameters
+  - **Offline Detection**: Network status monitoring with user feedback
+  - **Search History**: localStorage-based history with 10-item limit and duplicate prevention
+  - **Interactive Timeline**: Hourly risk visualization with clickable time selection
+  - **Custom UI**: Animated gradient backgrounds, parking-themed SVG icons, modern typography (Sora + Space Grotesk)
+  - **Real-time Validation**: Form validation with error handling and loading states
+  - **Responsive Design**: Mobile-first approach with breakpoint optimization
 
 ## Getting Started
 
@@ -116,34 +123,35 @@ ParkSafe-LA/
 └── README.md            
 ```
 
-## Technical Skills
+## Technical Skills Demonstrated
 
-### Machine Learning
-- **Large-scale data processing** (23M+ records)
-- **Feature engineering** for geospatial and temporal data
-- **Handling class imbalance** in real-world datasets
-- **Model evaluation** and performance optimization
-- **Production model deployment**
+### Machine Learning & Data Science
+- **Large-scale data processing** (23M+ records with pandas and NumPy)
+- **Feature engineering** for geospatial and temporal data (haversine distance, cyclical encoding)
+- **Class imbalance handling** using weighted Random Forest
+- **Model persistence** and production deployment with pickle serialization
 
-### Software Engineering
-- **Web application development** with Flask
-- **API design** and request handling
-- **Input validation** and error management
-- **Code organization** and documentation
-- **Version control** with Git
+### Full-Stack Development
+- **Backend**: Flask API design, request handling, CORS configuration, error management
+- **Frontend**: React.js with hooks (useState, useEffect, useRef), component architecture, custom hooks
+- **State Management**: localStorage API for persistent client-side data
+- **Animations**: Framer Motion for smooth UI transitions and micro-interactions
+- **Styling**: Tailwind CSS with custom design system and responsive breakpoints
 
-### Data Science
-- **Geospatial analysis** and coordinate mapping
-- **Time series feature engineering**
-- **Statistical analysis** of citation patterns
-- **Data visualization** and insights communication
+### Software Engineering Best Practices
+- **API Integration**: Asynchronous data fetching with Axios, error boundaries
+- **User Experience**: Loading states, form validation, offline detection, toast notifications
+- **Code Organization**: Component-based architecture, utility functions, constants management
+- **Version Control**: Git workflow with feature branches and descriptive commits
 
-## Business Impact
+## Key Takeaways for Recruiters
 
-This project demonstrates the ability to:
-- Efficient processing and analysis of large-scale datasets
-- **End-to-end development** of production-ready machine learning models
-- **Real-world problem-solving** through data-driven insights
+This project demonstrates:
+- **End-to-end ML development**: From 23M raw records to production-deployed model
+- **Full-stack capabilities**: Modern React frontend + Flask backend + ML integration
+- **Product thinking**: User-focused features (PDF export, sharing, offline support)
+- **Production-ready code**: Error handling, validation, responsive design, performance optimization
+- **Real-world problem solving**: Handling imbalanced datasets and deploying ML at scale
 
 ## ⚠️ Disclaimer
 ParkSafe-LA is intended purely as a safety-oriented, educational tool to help users understand trends in parking citation risk based on historical data. It must not be used to circumvent parking regulations or to justify illegal parking behavior. Always follow local parking signs and ordinances.
